@@ -4,7 +4,6 @@ export class Mario {
         this.y = y
         this.width = width
         this.height = height
-        this.game = game
         this.gravity = 0.75
         this.gravitySpeed = 0
         this.ySpeed = 0
