@@ -1,5 +1,6 @@
 import {Mario} from "./Classes/Mario.js"
-import {Barrel} from "./Classes/barrel.js"
+import {Barrel} from "./Classes/Barrel.js"
+import {Platform} from "./Classes/Platform.js";
 
 const canvas = document.getElementById("myCanvas");
 const ctx = canvas.getContext("2d", { willReadFrequently: true });
@@ -9,28 +10,45 @@ let marY = 200
 let marWidth = 50
 let marHeight = 50
 
+let upPressed = false;
+let leftPressed = false;
+let rightPressed = false;
+
 let barX = 1000
 let barY = 200
 let barWidth = 30
 let barHeight = 30
 
-let leftPressed = false;
-let rightPressed = false;
-let upPressed = false;
+let platStartX = 50
+let platStartY = 400
+let platEndX = 1450
+let platEndY = 400
+
+let bottom = canvas.height - barHeight
 
 class Start {
     
     constructor(width, height) {
         this.width = width
         this.height = height
-        this.mario = new Mario(marX, marY, marWidth, marHeight)
+        this.mario = new Mario(marX, marY, marWidth, marHeight, upPressed, leftPressed, rightPressed)
         this.barrel = new Barrel(barX, barY, barWidth, barHeight)
+        this.platform = new Platform(platStartX, platStartY, platEndX, platEndY)
     }
 
     draw(ctx) {
         this.mario.drawMario(ctx)
-        this.mario.drawPlaform(ctx)
         this.barrel.drawBarrel(ctx)
+        this.platform.drawPlaform(ctx)
+    }
+
+    collision(ctx) {
+        this.mario.collision(ctx)
+        this.barrel.collision(ctx)
+    }
+
+    barrelRespawn() {
+        this.barrel.respawn()
     }
 
     gravity() {
@@ -38,70 +56,52 @@ class Start {
         this.barrel.gravity()
     }
 
-    collision() {
-        this.mario.collision()
-        this.barrel.collision()
-    }
+    move() {
+        if(this.mario.keys.w.pressed) {
+            this.mario.moveY(marY -= 5)
+        }
 
-    barrelRespawn() {
-        let bottom = canvas.height - barHeight
-        if(barY > bottom) {
-            barX = 1000
-            barY = 200
+        else {
+            marY = 350
+        }
+
+        if(this.mario.keys.a.pressed) {
+            this.mario.moveX(marX -= 3)
+        }
+
+        if(this.mario.keys.d.pressed) {
+            this.mario.moveX(marX += 3)
         }
     }
 
-    movement() {
-        document.addEventListener("keydown", keyDownHandler, false);
-        document.addEventListener("keyup", keyUpHandler, false);
+    score(ctx) {
+        let playerScore = null
 
-        function keyDownHandler(e) {
-            if(e.key == "Right" || e.key == "ArrowRight") {
-                rightPressed = true;
-            }
-            else if(e.key == "Left" || e.key == "ArrowLeft") {
-                leftPressed = true;
-            }
-            if(e.key == "Up" || e.key == "ArrowUp") {
-                upPressed = true;
-            }
-        }
+        /* if(marX == barX && marY > barY) {
+            playerScore = playerScore + 100
+        } */
 
-        function keyUpHandler(e) {
-            if(e.key == "Right" || e.key == "ArrowRight") {
-                rightPressed = false;
-            }
-            else if(e.key == "Left" || e.key == "ArrowLeft") {
-                leftPressed = false;
-            }
-            if(e.key == "Up" || e.key == "ArrowUp") {
-                upPressed = false;
-            }
-        }
+        /* if(marY = 250) {
+            playerScore = playerScore + 100
+        } */
 
-        if (rightPressed) {
-            marX += 5;
-        }
-        
-        else if (leftPressed) {
-            marX -= 5;
-        }
-
-        if (upPressed) {
-            marY -= 15
-        }
+        ctx.font = "24px Arial";
+        ctx.fillStyle = "#ffffff";
+        ctx.fillText(`Score: ${playerScore}`, 8, 20);
     }
 }
 
 const start = new Start(canvas.width, canvas.height)
 
 function animation() {
-    requestAnimationFrame(animation)
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    start.draw()
-    start.gravity()
-    start.collision()
-    start.movement()
+    start.draw(ctx)
+    start.move()
+    start.gravity(ctx)
+    start.collision(ctx)
+    start.barrelRespawn()
+    start.score(ctx)
+    requestAnimationFrame(animation)
 }
 
 requestAnimationFrame(animation)
