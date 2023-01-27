@@ -4,19 +4,20 @@ export class Barrel {
         this.y = y
         this.width = width
         this.height = height
-        this.gravity = 0.5
-        this.gravitySpeed = 0
-        this.ySpeed = 0
+        this.force = 1
+        this.speed = 0
     }
 
     drawBarrel(ctx) {
+        ctx.beginPath()
         ctx.rect(this.x, this.y, this.width, this.height);
         ctx.fillStyle = "brown";
+        ctx.fill()
+        ctx.closePath()
     }
 
     gravity() {
-        this.gravitySpeed += this.gravity;
-        this.y += this.ySpeed + this.gravitySpeed
+        this.y += this.speed + this.force
     }
 
     collision(ctx) {
@@ -26,9 +27,16 @@ export class Barrel {
 
             if(color == 255) {
                 this.y = 365
-                this.x = this.x - 0.2
-                this.gravitySpeed = 0
+                this.x = this.x - 0.04
+                this.speed = 0
             }
+        }
+    }
+
+    respawn() {
+        if (this.y > 775) {
+            this.x = 1000
+            this.y = 200
         }
     }
 }
