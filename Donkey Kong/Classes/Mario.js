@@ -1,31 +1,85 @@
+const keys = {
+    w: {
+        pressed: false,
+    },
+    
+    a: {
+        pressed: false,
+    },
+
+    d: {
+        pressed: false,
+    },
+};
+
 export class Mario {
-    constructor(x, y, width, height) {
+    constructor(x, y, width, height, up, left, right) {
         this.x = x
         this.y = y
         this.width = width
         this.height = height
-        this.gravity = 0.75
-        this.gravitySpeed = 0
-        this.ySpeed = 0
+        this.force = 5
+        this.speed = 0
+        this.up = up
+        this.left = left
+        this.right = right
+        this.keys = keys
+
+        document.addEventListener("keydown", (e) => {
+            switch(e.key) {
+              case "w":
+                this.keys.w.pressed = true;
+                break;
+
+              case "a":
+                this.keys.a.pressed = true;
+                break;
+
+              case "d":
+                this.keys.d.pressed = true;
+                break;
+            }
+        });
+
+        document.addEventListener("keyup", (e) => {
+            switch(e.key) {
+              case "w":
+                this.keys.w.pressed = false;
+                break;
+
+              case "s":
+                this.keys.s.pressed = false;
+                break;
+
+              case "a":
+                this.keys.a.pressed = false;
+                break;
+
+              case "d":
+                this.keys.d.pressed = false;
+                break;
+            }
+        }); 
+    }
+
+    moveX(x) {
+        this.x = x
+    }
+
+    moveY(y) {
+        this.y = y
     }
 
     drawMario(ctx) {
+        ctx.beginPath()
         ctx.rect(this.x, this.y, this.width, this.height);
         ctx.fillStyle = "blue";
-    }
-
-    drawPlaform(ctx) {
-        ctx.strokeStyle = "red";
-        ctx.beginPath();
-        ctx.moveTo(50, 400);
-        ctx.lineTo(1450, 400);
-        ctx.closePath();
-        ctx.stroke();
+        ctx.fill()
+        ctx.closePath()
     }
 
     gravity() {
-        this.gravitySpeed += this.gravity;
-        this.y += this.ySpeed + this.gravitySpeed
+        this.y += this.speed + this.force
     }
 
     collision(ctx) {
@@ -34,8 +88,8 @@ export class Mario {
             let color = info.data[i];
 
             if(color == 255) {
-                this.y = 350
-                this.gravitySpeed = 0
+                this.y = 345 // Shouldn't be hardcoded
+                this.speed = 0
             }
         }
     }
