@@ -1,12 +1,13 @@
 import {Mario} from "./Classes/Mario.js"
 import {Barrel} from "./Classes/Barrel.js"
 import {Platform} from "./Classes/Platform.js";
+import {Ladder} from "./Classes/Ladder.js";
 
 const canvas = document.getElementById("myCanvas");
 const ctx = canvas.getContext("2d", { willReadFrequently: true });
 
 let marX = 200
-let marY = 200
+let marY = 350
 let marWidth = 50
 let marHeight = 50
 
@@ -24,6 +25,11 @@ let platStartY = 400
 let platEndX = 1450
 let platEndY = 400
 
+let ladStartX = 1300
+let ladStartY = 395
+let ladEndX = 1300
+let ladEndY = 200
+
 let bottom = canvas.height - barHeight
 
 class Start {
@@ -34,12 +40,17 @@ class Start {
         this.mario = new Mario(marX, marY, marWidth, marHeight, upPressed, leftPressed, rightPressed)
         this.barrel = new Barrel(barX, barY, barWidth, barHeight)
         this.platform = new Platform(platStartX, platStartY, platEndX, platEndY)
+        this.ladder = new Ladder(ladStartX, ladStartY, ladEndX, ladEndY)
     }
 
+
+
     draw(ctx) {
+        this.ladder.drawLadder(ctx)
         this.mario.drawMario(ctx)
         this.barrel.drawBarrel(ctx)
         this.platform.drawPlaform(ctx)
+        
     }
 
     collision(ctx) {
