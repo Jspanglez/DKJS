@@ -27,37 +27,41 @@ export class Mario {
 
         document.addEventListener("keydown", (e) => {
             switch(e.key) {
-              case "w":
-                this.keys.w.pressed = true;
-                break;
+                case "w":
+                    this.keys.w.pressed = true;
+                    break;
 
-              case "a":
-                this.keys.a.pressed = true;
-                break;
+                case "s":
+                    this.keys.s.pressed = false;
+                    break;
 
-              case "d":
-                this.keys.d.pressed = true;
-                break;
+                case "a":
+                    this.keys.a.pressed = true;
+                    break;
+
+                case "d":
+                    this.keys.d.pressed = true;
+                    break;
             }
         });
 
         document.addEventListener("keyup", (e) => {
             switch(e.key) {
-              case "w":
-                this.keys.w.pressed = false;
-                break;
+                case "w":
+                    this.keys.w.pressed = false;
+                    break;
 
-              case "s":
-                this.keys.s.pressed = false;
-                break;
+                case "s":
+                    this.keys.s.pressed = false;
+                    break;
 
-              case "a":
-                this.keys.a.pressed = false;
-                break;
+                case "a":
+                    this.keys.a.pressed = false;
+                    break;
 
-              case "d":
-                this.keys.d.pressed = false;
-                break;
+                case "d":
+                    this.keys.d.pressed = false;
+                    break;
             }
         }); 
     }
