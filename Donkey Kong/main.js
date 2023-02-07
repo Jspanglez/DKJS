@@ -30,6 +30,58 @@ let ladStartY = 395
 let ladEndX = 1300
 let ladEndY = 200
 
+let img = new Image();
+img.src = './mario_luigi_sprites.png'
+img.onload = function() {
+  init()
+}
+
+let img2 = new Image();
+img2.src = './mario_luigi_sprites.png'
+img2.onload = function() {
+  init()
+}
+
+const scale = 3
+const width = 17
+const height = 22
+const scaledWidth = scale * width
+const scaledHeight = scale * height
+
+function drawFrame(frameX, frameY, canvasX, canvasY) {
+    ctx.drawImage(img, frameX * width, frameY * height, width, height,
+                  canvasX + 60, canvasY, scaledWidth, scaledHeight)
+
+    ctx.save()
+    ctx.scale(-1, 1)
+    ctx.drawImage(img2, frameX * width, frameY * height, width, height,
+                -canvasX - scaledWidth, canvasY, scaledWidth, scaledHeight)
+    ctx.restore()
+}
+
+// function drawFrame2(frameX, frameY, canvasX, canvasY) {
+//     ctx.save()
+//     ctx.scale(-1, 1)
+//     ctx.drawImage(img2, frameX * width, frameY * height, width, height,
+//                   -canvasX - scaledWidth, canvasY, scaledWidth, scaledHeight)
+//     ctx.restore()
+// }
+
+function init() {
+    window.requestAnimationFrame(step)
+}
+
+/* function init () {
+    ctx.save();
+    ctx.scale(-1, 1);
+    ctx.drawImage(img, 0, 0, width, height, -scaledWidth, 0, scaledWidth, scaledHeight);
+    ctx.drawImage(img, 16.5, 0, width, height, -scaledWidth * 2, 0, scaledWidth, scaledHeight);
+    ctx.drawImage(img, 0, 0, width, height, -scaledWidth * 3, 0, scaledWidth, scaledHeight);
+    ctx.drawImage(img, 35, 0, width, height, -scaledWidth * 4, 0, scaledWidth, scaledHeight);
+    ctx.restore();
+    window.requestAnimationFrame(animation)
+} */
+
 let bottom = canvas.height - barHeight
 
 class Start {
@@ -43,7 +95,9 @@ class Start {
         this.ladder = new Ladder(ladStartX, ladStartY, ladEndX, ladEndY)
     }
 
-
+    sprites() {
+        init()
+    }
 
     draw(ctx) {
         this.ladder.drawLadder(ctx)
@@ -105,14 +159,39 @@ class Start {
 const start = new Start(canvas.width, canvas.height)
 
 function animation() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    //start.sprites()
     start.draw(ctx)
     start.move()
     start.gravity(ctx)
     start.collision(ctx)
     start.barrelRespawn()
-    start.score(ctx)
-    requestAnimationFrame(animation)
+    //start.score(ctx)
+    window.requestAnimationFrame(animation)
 }
 
-requestAnimationFrame(animation)
+const cycleLoop = [0, 1, 2]
+let currentLoopIndex = 0
+let frameCount = 0
+
+function step() {
+    //start.sprites()
+    frameCount++
+
+    if (frameCount < 14) {
+        window.requestAnimationFrame(step);
+        return;
+    }
+
+    frameCount = 0
+    ctx.clearRect(0, 0, canvas.width, canvas.height)
+    drawFrame(cycleLoop[currentLoopIndex], 0, 0, 0)
+    // drawFrame2(cycleLoop[currentLoopIndex], 0, 0, 0)
+    currentLoopIndex++
+    if (currentLoopIndex >= cycleLoop.length) {
+        currentLoopIndex = 0
+    }
+    window.requestAnimationFrame(step)
+}
+
+//requestAnimationFrame(animation)
+//requestAnimationFrame(step)
