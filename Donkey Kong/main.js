@@ -177,7 +177,7 @@ function step() {
     //start.sprites()
     frameCount++
 
-    if (frameCount < 14) {
+    if (frameCount < 17) {
         window.requestAnimationFrame(step);
         return;
     }
