@@ -31,14 +31,8 @@ let ladEndX = 1300
 let ladEndY = 200
 
 let img = new Image();
-img.src = './mario_luigi_sprites.png'
+img.src = './mario_and_luigi_sprites.png'
 img.onload = function() {
-  init()
-}
-
-let img2 = new Image();
-img2.src = './mario_luigi_sprites.png'
-img2.onload = function() {
   init()
 }
 
@@ -54,7 +48,7 @@ function drawFrame(frameX, frameY, canvasX, canvasY) {
 
     ctx.save()
     ctx.scale(-1, 1)
-    ctx.drawImage(img2, frameX * width, frameY * height, width, height,
+    ctx.drawImage(img, frameX * width, frameY * height, width, height,
                 -canvasX - scaledWidth, canvasY, scaledWidth, scaledHeight)
     ctx.restore()
 }
@@ -177,7 +171,7 @@ function step() {
     //start.sprites()
     frameCount++
 
-    if (frameCount < 17) {
+    if (frameCount < 10) {
         window.requestAnimationFrame(step);
         return;
     }
