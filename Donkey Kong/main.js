@@ -30,11 +30,11 @@ let ladStartY = 395
 let ladEndX = 1300
 let ladEndY = 200
 
-let img = new Image();
-img.src = './mario_and_luigi_sprites.png'
-img.onload = function() {
-  init()
-}
+// let img = new Image();
+// img.src = './mario_and_luigi_sprites.png'
+// img.onload = function() {
+//   init()
+// }
 
 const scale = 3
 const width = 17
@@ -61,9 +61,9 @@ function drawFrame(frameX, frameY, canvasX, canvasY) {
 //     ctx.restore()
 // }
 
-function init() {
-    window.requestAnimationFrame(step)
-}
+// function init() {
+//     window.requestAnimationFrame(step)
+// }
 
 /* function init () {
     ctx.save();
@@ -78,7 +78,7 @@ function init() {
 
 let bottom = canvas.height - barHeight
 
-class Start {
+class Game {
     
     constructor(width, height) {
         this.width = width
@@ -98,13 +98,24 @@ class Start {
         this.mario.drawMario(ctx)
         this.barrel.drawBarrel(ctx)
         this.platform.drawPlaform(ctx)
-        
     }
 
     collision(ctx) {
         this.mario.collision(ctx)
         this.barrel.collision(ctx)
     }
+
+    // collision(ctx) {
+    //     let info = ctx.getImageData(platStartX, platEndY, 1400, 10)
+    //     for(let i = 0, n = info.data.length; i < n; i += 4) {
+    //         let color = info.data[i+2];
+
+    //         if(color == 255) {
+    //             marY = 345
+    //             this.mario.speed = 0
+    //         }
+    //     }
+    // }
 
     barrelRespawn() {
         this.barrel.respawn()
@@ -116,20 +127,20 @@ class Start {
     }
 
     move() {
-        if(this.mario.keys.w.pressed) {
-            this.mario.moveY(marY -= 5)
+        if(this.mario.keys.w.pressed && marY > 225) {
+            this.mario.moveY(marY -= 2)
         }
 
-        else {
+        else if (!this.mario.keys.w.pressed) {
             marY = 350
         }
 
         if(this.mario.keys.a.pressed) {
-            this.mario.moveX(marX -= 3)
-        }
+            this.mario.moveX(marX -= 1)
+            }
 
         if(this.mario.keys.d.pressed) {
-            this.mario.moveX(marX += 3)
+            this.mario.moveX(marX += 1)
         }
     }
 
@@ -150,16 +161,18 @@ class Start {
     }
 }
 
-const start = new Start(canvas.width, canvas.height)
+const game = new Game(canvas.width, canvas.height)
 
 function animation() {
-    //start.sprites()
-    start.draw(ctx)
-    start.move()
-    start.gravity(ctx)
-    start.collision(ctx)
-    start.barrelRespawn()
-    //start.score(ctx)
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    //game.sprites()
+    game.draw(ctx)
+    game.move()
+    game.gravity(ctx)
+    game.collision(ctx)
+    game.barrelRespawn()
+    //game.score(ctx)
+
     window.requestAnimationFrame(animation)
 }
 
@@ -167,8 +180,8 @@ const cycleLoop = [0, 1, 2]
 let currentLoopIndex = 0
 let frameCount = 0
 
-function step() {
-    //start.sprites()
+/* function step() {
+    //game.sprites()
     frameCount++
 
     if (frameCount < 10) {
@@ -185,7 +198,7 @@ function step() {
         currentLoopIndex = 0
     }
     window.requestAnimationFrame(step)
-}
+} */
 
-//requestAnimationFrame(animation)
+requestAnimationFrame(animation)
 //requestAnimationFrame(step)
