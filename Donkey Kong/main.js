@@ -146,6 +146,15 @@ class Game {
 
         this.ladder9 = new Ladder(1125, 148, 38)
         this.ladder10 = new Ladder(1125, 180, 38)
+
+        this.ladder11 = new Ladder(680, 525, 38)
+        this.ladder12 = new Ladder(680, 505, 38)
+        this.ladder13 = new Ladder(680, 485, 38)
+
+        this.ladder14 = new Ladder(760, 418, 38)
+        this.ladder15 = new Ladder(760, 387, 38)
+        this.ladder16 = new Ladder(760, 373, 38)
+
     }
 
     sprites() {
@@ -167,6 +176,14 @@ class Game {
 
         this.ladder9.drawLadder(ctx)
         this.ladder10.drawLadder(ctx)
+
+        this.ladder11.drawLadder(ctx)
+        this.ladder12.drawLadder(ctx)
+        this.ladder13.drawLadder(ctx)
+
+        this.ladder14.drawLadder(ctx)
+        this.ladder15.drawLadder(ctx)
+        this.ladder16.drawLadder(ctx)
 
         //this.barrel.drawBarrel(ctx)
         this.platform.drawPlatform(ctx)
