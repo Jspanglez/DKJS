@@ -125,10 +125,10 @@ class Game {
         this.segment39 = new Platform(1121, 218, 8)
         this.segment40 = new Platform(1244, 213, 5)
 
-        this.segment41 = new Platform(1121, 161, 8)
-        this.segment42 = new Platform(998, 156, 8)
-        this.segment43 = new Platform(875, 151, 8)
-        this.segment44 = new Platform(752, 146, 8)
+        this.segment41 = new Platform(1121, 126, 8)
+        this.segment42 = new Platform(998, 121, 8)
+        this.segment43 = new Platform(875, 116, 8)
+        this.segment44 = new Platform(752, 111, 8)
 
         this.dkPlatform = new Platform(120, 106, 42)
 
