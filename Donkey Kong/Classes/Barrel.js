@@ -1,3 +1,6 @@
+let img = new Image()
+img.src = './mario_and_luigi_sprites.png'
+
 export class Barrel {
     constructor(x, y, width, height) {
         this.x = x
