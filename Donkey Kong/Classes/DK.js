@@ -1,8 +1,8 @@
-let img = new Image();
+let img = new Image()
 img.src = './DK_sprites.png'
-img.onload = function() {
-    new DK()
-}
+
+let img2 = new Image()
+img2.src = './mario_and_luigi_sprites.png'
 
 export class DK {
   constructor(x, y) {
