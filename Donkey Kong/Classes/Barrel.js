@@ -2,14 +2,38 @@ let img = new Image()
 img.src = './mario_and_luigi_sprites.png'
 
 export class Barrel {
-    constructor(x, y, width, height) {
+    constructor(x, y, width, height, canvas, ctx) {
         this.x = x
         this.y = y
         this.width = width
         this.height = height
-        this.force = 1
-        this.speed = 0
+        this.canvas = canvas
+        this.ctx = ctx
+        this.force = 0.5
+        this.currentPlatform = null
+        this.left = false
+        this.right = false
+        this.rollingRight = [1.5, 16.5, 31.5, 46.5]
+        this.rollingLeft = [46.5, 31.5, 16.5, 1.5]
+        this.rollingDown = [1.5, 20.5]
+        this.currentLoopIndex = 0
+        this.frameCount = 0
+        this.barrels = []
+        this.lastBarrelTimestamp = 0
+        this.score = 0
+        this.scored = false
+        this.lives = 3
+        this.dead = false
+        this.gameOver = false
+        this.frozen = false
     }
+
+    /* drawBarrel(ctx) {
+        ctx.drawImage(img, 1.5, 106, 13, 15, this.x + 150, this.y, this.width, this.height)
+        ctx.drawImage(img, 16.5, 106, 13, 15, this.x + 200, this.y, this.width, this.height)
+        ctx.drawImage(img, 31.5, 106, 13, 15, this.x + 250, this.y, this.width, this.height)
+        ctx.drawImage(img, 46.5, 106, 13, 15, this.x + 300, this.y, this.width, this.height)
+    } */
 
     drawFrame(frameX) {
         this.ctx.drawImage(img, frameX, 106, 13, 15, this.x, this.y, this.width, this.height)
@@ -18,6 +42,27 @@ export class Barrel {
     drawFalling(x) {
         this.ctx.drawImage(img, x, 135, 15, 17, this.x, this.y, this.width, this.height)
     }
+
+    /* step() {
+        this.frameCount++
+        if (this.frameCount < 20) {
+            window.requestAnimationFrame(() => this.step())
+            return
+        }
+
+        this.frameCount = 0
+
+        //this.ctx.clearRect(this.x, this.y, this.width, this.height)
+        this.drawFrame(this.cycleLoop[this.currentLoopIndex])
+        this.currentLoopIndex++
+
+        if (this.currentLoopIndex >= this.cycleLoop.length) {
+            this.currentLoopIndex = 0
+        }
+
+        window.requestAnimationFrame(() => this.step())
+    } */
+
     step() {
 
         this.frameCount++
@@ -61,7 +106,7 @@ export class Barrel {
             }
         }
     }
-
+    
     gravity() {
         this.y += this.force
     }
@@ -69,8 +114,8 @@ export class Barrel {
     move() {
         if (this.left) {
             this.x -= 5
-    }
-
+        }
+        
         else if (this.right) {
             this.x += 5
         }
@@ -229,13 +274,13 @@ export class Barrel {
                 this.score += 100
                 this.barrels[i].scored = false
             }
-            }
+        }
 
         for (let i = 0; i < this.barrels.length; i++) {
             if (this.barrels[i].dead) {
                 this.resetGame(player)
+            }
         }
-    }
 
         if (this.lives < 0) {
             //Game Over
