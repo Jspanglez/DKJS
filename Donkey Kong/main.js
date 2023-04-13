@@ -154,85 +154,14 @@ class Game {
     }
 
     draw(ctx) {
-        this.ladder.drawLadder(ctx)
-        this.ladder2.drawLadder(ctx)
+        for(const ladder of this.ladders) {
+            ladder.drawLadder(ctx)
+        }
 
-        this.ladder3.drawLadder(ctx)
-        this.ladder4.drawLadder(ctx)
+        for(const platform of this.platforms) {
+            platform.drawPlatform(ctx)
+        }
 
-        this.ladder5.drawLadder(ctx)
-        this.ladder6.drawLadder(ctx)
-
-        this.ladder7.drawLadder(ctx)
-        this.ladder8.drawLadder(ctx)
-
-        this.ladder9.drawLadder(ctx)
-        this.ladder10.drawLadder(ctx)
-
-        this.ladder11.drawLadder(ctx)
-        this.ladder12.drawLadder(ctx)
-        this.ladder13.drawLadder(ctx)
-
-        this.ladder14.drawLadder(ctx)
-        this.ladder15.drawLadder(ctx)
-        this.ladder16.drawLadder(ctx)
-
-        //this.barrel.drawBarrel(ctx)
-        this.platform.drawPlatform(ctx)
-        this.segment.drawPlatform(ctx)
-        this.segment2.drawPlatform(ctx)
-        this.segment3.drawPlatform(ctx)
-        this.segment4.drawPlatform(ctx)
-        this.segment5.drawPlatform(ctx)
-
-        this.platform2.drawPlatform(ctx)
-        this.segment6.drawPlatform(ctx)
-        this.segment7.drawPlatform(ctx)
-        this.segment8.drawPlatform(ctx)
-        this.segment9.drawPlatform(ctx)
-        this.segment10.drawPlatform(ctx)
-        this.segment11.drawPlatform(ctx)
-        this.segment12.drawPlatform(ctx)
-        this.segment13.drawPlatform(ctx)
-
-        this.segment14.drawPlatform(ctx)
-        this.segment15.drawPlatform(ctx)
-        this.segment16.drawPlatform(ctx)
-        this.segment17.drawPlatform(ctx)
-        this.segment18.drawPlatform(ctx)
-        this.segment19.drawPlatform(ctx)
-        this.segment20.drawPlatform(ctx)
-        this.segment21.drawPlatform(ctx)
-        this.segment22.drawPlatform(ctx)
-
-        this.segment23.drawPlatform(ctx)
-        this.segment24.drawPlatform(ctx)
-        this.segment25.drawPlatform(ctx)
-        this.segment26.drawPlatform(ctx)
-        this.segment27.drawPlatform(ctx)
-        this.segment28.drawPlatform(ctx)
-        this.segment29.drawPlatform(ctx)
-        this.segment30.drawPlatform(ctx)
-        this.segment31.drawPlatform(ctx)
-
-        this.segment32.drawPlatform(ctx)
-        this.segment33.drawPlatform(ctx)
-        this.segment34.drawPlatform(ctx)
-        this.segment35.drawPlatform(ctx)
-        this.segment36.drawPlatform(ctx)
-        this.segment37.drawPlatform(ctx)
-        this.segment38.drawPlatform(ctx)
-        this.segment39.drawPlatform(ctx)
-        this.segment40.drawPlatform(ctx)
-
-        this.segment41.drawPlatform(ctx)
-        this.segment42.drawPlatform(ctx)
-        this.segment43.drawPlatform(ctx)
-        this.segment44.drawPlatform(ctx)
-
-        this.dkPlatform.drawPlatform(ctx)
-
-        this.mario.drawMario(ctx)
         this.dk.drawDK(ctx)
     }
 
