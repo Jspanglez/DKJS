@@ -6,8 +6,8 @@ img2.src = './mario_and_luigi_sprites.png'
 
 export class DK {
 	constructor(x, y, ctx, canvas) {
-    this.x = x
-    this.y = y
+		this.x = x
+		this.y = y
 		this.ctx = ctx
 		this.canvas = canvas
 		this.frameCount = 0
@@ -27,9 +27,9 @@ export class DK {
         this.displayDuration = 1000
         this.hideDuration = 1000
         this.startTime = 0
-  }
+	}
 
-  drawDK(ctx) {
+	drawDK(ctx) {
 		/* Donkey Kong */
 		// ctx.drawImage(img, 132, 50, 40, 38, this.x, this.y, 120, 124)
 		// ctx.drawImage(img, 332, 50, 50, 38, this.x, this.y, spriteWidth, spriteHeight)
@@ -91,5 +91,9 @@ export class DK {
 		}
 	}
 
-  }
+    update(ctx) {
+        this.drawDK(ctx)
+        this.step()
+        this.drawHelp(ctx)
+    }
 }
