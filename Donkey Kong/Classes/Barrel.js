@@ -156,6 +156,12 @@ export class Barrel {
         }
     }
 
+    points(ctx) {
+        ctx.fillStyle = 'white'
+        ctx.font = '16px "Press Start 2P", Arial'
+        ctx.fillText(`Score: ${this.score}`, 80, 20)
+    }
+
             }
         }
     }
