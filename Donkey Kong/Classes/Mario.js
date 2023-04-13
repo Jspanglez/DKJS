@@ -88,25 +88,40 @@ export class Mario {
         });
     }
 
-    moveX(x) {
-        this.x = x
-    }
-
-    moveY(y) {
-        this.y = y
-    }
-
-    /* drawMario(ctx) {
-        ctx.beginPath()
-        ctx.rect(this.x, this.y, this.width, this.height);
-        ctx.fillStyle = "gold";
-        ctx.fill()
-        ctx.closePath()
-    } */
-
     drawMario(ctx) {
-        ctx.drawImage(img, 0, 0, 16, 22, this.x, this.y, this.width, this.height)
+        ctx.save()
+      
+        if (this.facingLeft) {
+
+          if (this.isJumping) {
+            ctx.drawImage(img, 53, 0, 15, 22, this.x, this.y, this.width, this.height)
     }
+
+          /* Mario is moving left */
+          else {
+            ctx.drawImage(img, 0, 0, 15, 22, this.x, this.y, this.width, this.height)
+          }
+    }
+
+        else {
+          ctx.save()
+          ctx.scale(-1, 1)
+
+          if (this.isJumping) {
+            ctx.drawImage(img, 53, 0, 15, 22, -this.x - this.width, this.y, this.width, this.height)
+    }
+
+          /* Mario is moving right */
+          else {
+            ctx.drawImage(img, 0, 0, 15, 22, -this.x - this.width, this.y, this.width, this.height)
+          }
+
+          ctx.restore()
+        }
+      
+        ctx.restore()
+    }
+      
 
     gravity() {
         this.y += this.speed + this.force
