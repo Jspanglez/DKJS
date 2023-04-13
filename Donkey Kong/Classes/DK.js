@@ -30,10 +30,25 @@ export class DK {
   }
 
   drawDK(ctx) {
-    const spriteWidth = 120
-    const spriteHeight = 124
-    const spriteX = 132
-    const spriteY = 50
+		/* Donkey Kong */
+		// ctx.drawImage(img, 132, 50, 40, 38, this.x, this.y, 120, 124)
+		// ctx.drawImage(img, 332, 50, 50, 38, this.x, this.y, spriteWidth, spriteHeight)
+		// ctx.drawImage(img, 382, 50, 50, 38, this.x, this.y, spriteWidth, spriteHeight)
+		// ctx.drawImage(img, 332, 50, 50, 38, this.x, this.y, spriteWidth, spriteHeight)
+		// ctx.drawImage(img, 382, 50, 50, 38, this.x, this.y, spriteWidth, spriteHeight)
+		// ctx.drawImage(img, 181, 50, 45, 38, this.x, this.y, spriteWidth, spriteHeight)
+		// ctx.drawImage(img, 618, 50, 40, 38, this.x, this.y, spriteWidth, spriteHeight)
+		// ctx.drawImage(img, 280, 50, 45, 38, this.x, this.y, spriteWidth, spriteHeight)
+		
+		/* Stationary barrels */
+		ctx.drawImage(img2, 59.5, 109, 15, 16, 150, 88, 50, 50)
+		ctx.drawImage(img2, 59.5, 109, 15, 16, 150, 40, 50, 50)
+		ctx.drawImage(img2, 59.5, 109, 15, 16, 195, 88, 50, 50)
+		ctx.drawImage(img2, 59.5, 109, 15, 16, 195, 40, 50, 50)
+
+		/* Pauline */
+		ctx.drawImage(img2, 18, 243, 20, 22, 510, 5, 50, 50)
+	}
 
     ctx.drawImage(img, spriteX, spriteY, 40, 38, this.x, this.y, spriteWidth, spriteHeight)
   }
