@@ -60,7 +60,8 @@ export class Barrel {
     }
 
     gravity() {
-        this.y += this.speed + this.force
+        this.y += this.force
+    }
     }
 
     collision(ctx) {
