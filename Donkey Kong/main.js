@@ -195,25 +195,15 @@ class Game {
         document.addEventListener("keydown", this.startGame)
     }
 
-        if(this.mario.keys.d.pressed) {
-            this.mario.moveX(marX += 3)
+    startGame(event) {
+        if (event.key === "Enter" && gameState === "title") {
+            // Remove event listener
+            document.removeEventListener("keydown", this.startGame)
+            // Change game state to "game"
+            gameState = "game"
+            // Call the update function to start the game loop
+            update()
         }
-    }
-
-    score(ctx) {
-        let playerScore = null
-
-        /* if(marX == barX && marY > barY) {
-            playerScore = playerScore + 100
-        } */
-
-        /* if(marY = 250) {
-            playerScore = playerScore + 100
-        } */
-
-        ctx.font = "24px Arial";
-        ctx.fillStyle = "#ffffff";
-        ctx.fillText(`Score: ${playerScore}`, 8, 20);
     }
 }
 
