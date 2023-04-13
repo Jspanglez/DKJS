@@ -177,24 +177,23 @@ class Game {
         /* this.dk.step() */
         this.dk.update(ctx)
     }
-    
-    move() {
-        if(this.mario.keys.space.pressed && marY > this.platform.y - 120) {
-            this.mario.moveY(marY -= 2)
-        }
 
-        else if (!this.mario.keys.space.pressed) {
-            marY = 550
-        }
+    showTitleScreen() {
+        // Clear canvas
+        ctx.clearRect(0, 0, this.width, this.height)
 
-        /* if(this.mario.keys.w.pressed) {
-            console.log(isLadder)
-            this.mario.moveY(marY -= 2)
-        } */
+        // Draw title screen
+        const x = (this.width - 700) / 2
+        ctx.drawImage(img, x, 10, 700, 400)
 
-        if(this.mario.keys.a.pressed) {
-            this.mario.moveX(marX -= 3)
-        }
+        ctx.fillStyle = 'white'
+        ctx.font = '16px "Press Start 2P", Arial'
+        ctx.textAlign = "center"
+        ctx.fillText("Press Enter to Start", this.width / 2, 500)
+
+        // Add event listener for enter key press to start the game
+        document.addEventListener("keydown", this.startGame)
+    }
 
         if(this.mario.keys.d.pressed) {
             this.mario.moveX(marX += 3)
