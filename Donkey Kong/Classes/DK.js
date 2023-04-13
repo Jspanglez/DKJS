@@ -50,6 +50,23 @@ export class DK {
 		ctx.drawImage(img2, 18, 243, 20, 22, 510, 5, 50, 50)
 	}
 
-    ctx.drawImage(img, spriteX, spriteY, 40, 38, this.x, this.y, spriteWidth, spriteHeight)
+    drawHelp(ctx) {
+
+        if (this.visible) {
+            ctx.drawImage(img, 264, 100, 25, 30, 570, 0, 60, 60)
+        }
+    
+        const currentTime = performance.now()
+    
+        if (this.visible && currentTime - this.startTime >= this.displayDuration) {
+            this.visible = false
+            this.startTime = currentTime
+        } 
+        
+        else if (!this.visible && currentTime - this.startTime >= this.hideDuration) {
+            this.visible = true
+            this.startTime = currentTime
+        }
+    }
   }
 }
