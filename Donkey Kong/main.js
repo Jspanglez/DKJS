@@ -165,76 +165,17 @@ class Game {
         this.dk.drawDK(ctx)
     }
 
-    collision(ctx) {
-        this.mario.ladderDetection(ctx, this.ladder)
-        this.mario.ladderDetection(ctx, this.ladder2)
-        this.mario.ladderDetection(ctx, this.ladder3)
-        this.mario.ladderDetection(ctx, this.ladder4)
+    updateMario() {
+        this.mario.update(ctx, this.platforms, this.ladders)
+    }
 
-        this.mario.collision(ctx, this.platform, 640)
-        this.mario.collision(ctx, this.segment, 110)
-        this.mario.collision(ctx, this.segment2, 110)
-        this.mario.collision(ctx, this.segment3, 110)
-        this.mario.collision(ctx, this.segment4, 110)
-        this.mario.collision(ctx, this.segment5, 110)
+    updateBarrel() {
+        this.barrel.update(ctx, this.platforms, this.mario)
+    }
 
-        this.mario.collision(ctx, this.platform2, 110)
-        this.mario.collision(ctx, this.segment6, 110)
-        this.mario.collision(ctx, this.segment7, 110)
-        this.mario.collision(ctx, this.segment8, 110)
-        this.mario.collision(ctx, this.segment9, 110)
-        this.mario.collision(ctx, this.segment10, 110)
-        this.mario.collision(ctx, this.segment11, 110)
-        this.mario.collision(ctx, this.segment12, 110)
-        this.mario.collision(ctx, this.segment13, 80)
-
-        this.mario.collision(ctx, this.segment14, 110)
-        this.mario.collision(ctx, this.segment15, 110)
-        this.mario.collision(ctx, this.segment16, 110)
-        this.mario.collision(ctx, this.segment17, 110)
-        this.mario.collision(ctx, this.segment18, 110)
-        this.mario.collision(ctx, this.segment19, 110)
-        this.mario.collision(ctx, this.segment20, 110)
-        this.mario.collision(ctx, this.segment21, 110)
-        this.mario.collision(ctx, this.segment22, 80)
-
-        this.mario.collision(ctx, this.segment23, 110)
-        this.mario.collision(ctx, this.segment24, 110)
-        this.mario.collision(ctx, this.segment25, 110)
-        this.mario.collision(ctx, this.segment26, 110)
-        this.mario.collision(ctx, this.segment27, 110)
-        this.mario.collision(ctx, this.segment28, 110)
-        this.mario.collision(ctx, this.segment29, 110)
-        this.mario.collision(ctx, this.segment30, 110)
-        this.mario.collision(ctx, this.segment31, 80)
-
-        this.mario.collision(ctx, this.segment32, 110)
-        this.mario.collision(ctx, this.segment33, 110)
-        this.mario.collision(ctx, this.segment34, 110)
-        this.mario.collision(ctx, this.segment35, 110)
-        this.mario.collision(ctx, this.segment36, 110)
-        this.mario.collision(ctx, this.segment37, 110)
-        this.mario.collision(ctx, this.segment38, 110)
-        this.mario.collision(ctx, this.segment39, 110)
-        this.mario.collision(ctx, this.segment40, 80)
-
-        this.mario.collision(ctx, this.segment41, 110)
-        this.mario.collision(ctx, this.segment42, 110)
-        this.mario.collision(ctx, this.segment43, 110)
-        this.mario.collision(ctx, this.segment44, 110)
-
-        this.mario.collision(ctx, this.dkPlatform, 640)
-
-        //this.barrel.collision(ctx)
-    }   
-
-    /* barrelRespawn() {
-        this.barrel.respawn()
-    } */
-
-    gravity() {
-        this.mario.gravity()
-        //this.barrel.gravity()
+    updateDK() {
+        /* this.dk.step() */
+        this.dk.update(ctx)
     }
     
     move() {
