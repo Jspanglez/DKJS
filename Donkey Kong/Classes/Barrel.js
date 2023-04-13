@@ -162,6 +162,14 @@ export class Barrel {
         ctx.fillText(`Score: ${this.score}`, 80, 20)
     }
 
+    playerLives(ctx) {
+        ctx.fillStyle = 'white'
+        ctx.font = '16px "Press Start 2P", Arial'
+        const text = `Lives: ${this.lives}`
+        const textWidth = ctx.measureText(text).width
+        const x = this.canvas.width - textWidth - 10 
+        ctx.fillText(text, x + 60, 20)
+    }
             }
         }
     }
