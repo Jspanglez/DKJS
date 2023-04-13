@@ -62,12 +62,44 @@ export class Barrel {
     gravity() {
         this.y += this.force
     }
+
+    move() {
+        if (this.left) {
+            this.x -= 5
     }
 
-    collision(ctx) {
-        let info = ctx.getImageData(this.x, this.y, this.width, this.height)
-        for(let i = 0, n = info.data.length; i < n; i += 4) {
-            let color = info.data[i];
+        else if (this.right) {
+            this.x += 5
+        }
+    
+        if (this.x < 1245 && this.y <= 106) {
+            this.right = true
+            this.left = false
+        } 
+        
+        else if (this.x === 1245) {
+            this.right = false
+            this.left = false
+        }
+    
+        if (this.y === 176 || this.y === 391 || this.y === 593) {
+            this.left = true
+        } 
+        
+        else if (this.x === 225) {
+            this.left = false
+        }
+    
+        if (this.y === 283 || this.y === 500) {
+            this.right = true
+        }
+    
+        if (this.x === 225 && this.y === 608) {
+            this.left = true
+            this.right = false
+        }
+    }    
+    
 
             if(color == 255) {
                 this.y = 365
