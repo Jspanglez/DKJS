@@ -100,11 +100,62 @@ export class Barrel {
         }
     }    
     
+    get barrelLeft() {
+        return this.x
+    }
 
-            if(color == 255) {
-                this.y = 365
-                this.x = this.x - 0.04
-                this.speed = 0
+    get barrelRight() {
+        return this.x + this.width
+    }
+
+    get barrelTop() {
+        return this.y
+    }
+
+    get barrelBottom() {
+        return this.y + this.height
+    }
+
+    get barrelMiddle() {
+        return (this.x + this.width) / 2
+    }
+
+    collision(platform, player) {
+        const playerLeft = player.x
+        const playerRight = player.x + player.width
+        const playerTop = player.y
+        const playerBottom = player.y + player.height
+        let playerMiddle = (player.x + player.width) / 2
+        let playerMiddleY = (player.y + player.height) / 2
+
+        // Check if the bottom of the barrel overlaps with the platform
+        if (this.barrelBottom > platform.y && this.barrelBottom - this.force < platform.y + 24 &&
+            this.x + this.width - 7 > platform.x && this.x < platform.x + (platform.w * 20) - 50) {
+          // Collision detected
+          this.currentPlatform = platform
+          this.y = platform.y - this.height
+        }
+
+        /* Need to limit the accepted y range for getting points */
+        else if (player.isJumping && (playerMiddle == this.barrelMiddle && playerMiddle < this.y)) {
+            this.scored = true
+        }
+
+        /* Losing a life */
+
+        else if (this.barrelLeft < playerRight &&
+                 this.barrelRight > playerLeft &&
+                 this.barrelTop < playerBottom &&
+                 this.barrelBottom > playerTop) {
+            this.dead = true
+        }
+
+        else {
+            // No collision, the barrel is falling
+            this.currentPlatform = null
+        }
+    }
+
             }
         }
     }
