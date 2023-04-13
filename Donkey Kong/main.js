@@ -209,42 +209,20 @@ class Game {
 
 const game = new Game(canvas.width, canvas.height)
 
-function animation() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    //game.sprites()
-    game.draw(ctx)
-    game.move()
-    game.gravity(ctx)
-    game.collision(ctx)
-    //game.barrelRespawn()
-    //game.score(ctx)
+function update() {
 
-    window.requestAnimationFrame(animation)
+    if (gameState == "game") {
+        ctx.clearRect(0, 0, canvas.width, canvas.height)
+        game.draw(ctx)
+        game.updateMario()
+        game.updateBarrel()
+        game.updateDK()
+        window.requestAnimationFrame(update)
+    }
+
+    else if (gameState == "title") {
+        game.showTitleScreen()
+    }
 }
 
-const cycleLoop = [0, 1, 2]
-let currentLoopIndex = 0
-let frameCount = 0
-
-/* function step() {
-    //game.sprites()
-    frameCount++
-
-    if (frameCount < 10) {
-        window.requestAnimationFrame(step);
-        return;
-    }
-
-    frameCount = 0
-    ctx.clearRect(0, 0, canvas.width, canvas.height)
-    drawFrame(cycleLoop[currentLoopIndex], 0, 0, 0)
-    // drawFrame2(cycleLoop[currentLoopIndex], 0, 0, 0)
-    currentLoopIndex++
-    if (currentLoopIndex >= cycleLoop.length) {
-        currentLoopIndex = 0
-    }
-    window.requestAnimationFrame(step)
-} */
-
-requestAnimationFrame(animation)
-//requestAnimationFrame(step)
+requestAnimationFrame(update)
