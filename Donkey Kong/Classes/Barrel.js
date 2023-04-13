@@ -170,6 +170,25 @@ export class Barrel {
         const x = this.canvas.width - textWidth - 10 
         ctx.fillText(text, x + 60, 20)
     }
+
+    resetGame(player) {
+
+        /* this.frozen = true
+
+        setTimeout(() => {
+            this.frozen = false
+        }, 5000) */
+
+        // Reset player's position to the starting position
+        player.x = 200
+        player.y = 608
+
+        // Reset the barrels
+        this.barrels = []
+
+        // Decrease player's lives
+        this.lives -= 1 
+    }
             }
         }
     }
