@@ -189,14 +189,53 @@ export class Barrel {
         // Decrease player's lives
         this.lives -= 1 
     }
+    
+    update(ctx, platforms, player) {
+
+        /* if (this.frozen) {
+            return
+        } */
+
+        const currentTime = performance.now()
+        const elapsedTime = currentTime - this.lastBarrelTimestamp
+
+        if (elapsedTime >= 5100) {
+            this.lastBarrelTimestamp = currentTime
+            this.barrels.push(new Barrel(this.x, this.y, this.width, this.height, this.canvas, this.ctx))
+        }
+
+        // Update each barrel
+        for (let i = 0; i < this.barrels.length; i++) {
+            const barrel = this.barrels[i]
+            barrel.move()
+            barrel.step()
+            barrel.gravity()
+        }
+
+        for (let i = 0; i < platforms.length; i++) {
+            for (let j = 0; j < this.barrels.length; j++) {
+                this.barrels[j].collision(platforms[i], player)
             }
+        }
+
+        this.points(ctx)
+        this.playerLives(ctx)
+
+        for (let i = 0; i < this.barrels.length; i++) {
+            if (this.barrels[i].scored) {
+                this.score += 100
+                this.barrels[i].scored = false
+            }
+            }
+
+        for (let i = 0; i < this.barrels.length; i++) {
+            if (this.barrels[i].dead) {
+                this.resetGame(player)
         }
     }
 
-    respawn() {
-        if (this.y > 775) {
-            this.x = 1000
-            this.y = 200
+        if (this.lives < 0) {
+            //Game Over
         }
     }
 }
