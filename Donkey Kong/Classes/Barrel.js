@@ -8,12 +8,55 @@ export class Barrel {
         this.speed = 0
     }
 
-    drawBarrel(ctx) {
-        ctx.beginPath()
-        ctx.rect(this.x, this.y, this.width, this.height);
-        ctx.fillStyle = "brown";
-        ctx.fill()
-        ctx.closePath()
+    drawFrame(frameX) {
+        this.ctx.drawImage(img, frameX, 106, 13, 15, this.x, this.y, this.width, this.height)
+    }
+
+    drawFalling(x) {
+        this.ctx.drawImage(img, x, 135, 15, 17, this.x, this.y, this.width, this.height)
+    }
+    step() {
+
+        this.frameCount++
+
+        if (this.right) {
+            if (this.frameCount == 15) {
+                this.frameCount = 0
+                this.ctx.clearRect(this.x, this.y, this.width, this.height)
+                this.drawFrame(this.rollingRight[this.currentLoopIndex])
+                this.currentLoopIndex++
+        
+                if (this.currentLoopIndex >= this.rollingRight.length) {
+                    this.currentLoopIndex = 0
+                }
+            }
+        }
+
+        else if (this.left) {
+            if (this.frameCount == 15) {
+                this.frameCount = 0
+                this.ctx.clearRect(this.x, this.y, this.width, this.height)
+                this.drawFrame(this.rollingLeft[this.currentLoopIndex])
+                this.currentLoopIndex++
+        
+                if (this.currentLoopIndex >= this.rollingLeft.length) {
+                    this.currentLoopIndex = 0
+                }
+            }
+        }
+
+        else if (!this.left && !this.right) {
+            if (this.frameCount == 15) {
+                this.frameCount = 0
+                this.ctx.clearRect(this.x, this.y, this.width, this.height)
+                this.drawFalling(this.rollingDown[this.currentLoopIndex])
+                this.currentLoopIndex++
+        
+                if (this.currentLoopIndex >= this.rollingDown.length) {
+                    this.currentLoopIndex = 0
+                }
+            }
+        }
     }
 
     gravity() {
