@@ -68,5 +68,28 @@ export class DK {
             this.startTime = currentTime
         }
     }
+
+	drawFrame(frameData) {
+		const x = frameData[0]
+    	const width = frameData[1]
+		this.ctx.drawImage(img, x, 50, width, 38, this.x, this.y, 120 + 20, 124 + 20)
+	}
+
+	step() {
+		this.frameCount++
+		if (this.frameCount == 90) {
+		this.frameCount = 0
+		this.ctx.clearRect(this.x, this.y, 120, 124)
+		const frameData = this.loop[this.loopIndex]
+		this.drawFrame(frameData)
+		//this.drawFrame(this.loop[this.currentLoopIndex])
+		this.loopIndex++
+
+			if (this.loopIndex >= this.loop.length) {
+				this.loopIndex = 0
+			}
+		}
+	}
+
   }
 }
