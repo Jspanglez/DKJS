@@ -1,82 +1,27 @@
 import {Mario} from "./Classes/Mario.js"
 import {DK} from "./Classes/DK.js"
 import {Barrel} from "./Classes/Barrel.js"
-import {Platform} from "./Classes/Platform.js";
-import {Ladder} from "./Classes/Ladder.js";
+import {Platform} from "./Classes/Platform.js"
+import {Ladder} from "./Classes/Ladder.js"
 
-const canvas = document.getElementById("myCanvas");
-const ctx = canvas.getContext("2d", { willReadFrequently: true });
+const canvas = document.getElementById("myCanvas")
+const ctx = canvas.getContext("2d", { willReadFrequently: true })
 
-let marX = 200
-let marY = 600
-let marWidth = 45 - 10
-let marHeight = 62 - 10
+let gameState = "title"
 
-let upPressed = false
-let leftPressed = false
-let rightPressed = false
-
-let barX = 1000
-let barY = 200
-let barWidth = 30
-let barHeight = 30
-
-// let img = new Image();
-// img.src = './mario_and_luigi_sprites.png'
-// img.onload = function() {
-//   init()
-// }
-
-const scale = 3
-const width = 17
-const height = 22
-const scaledWidth = scale * width
-const scaledHeight = scale * height
-
-function drawFrame(frameX, frameY, canvasX, canvasY) {
-    ctx.drawImage(img, frameX * width, frameY * height, width, height,
-                  canvasX + 60, canvasY, scaledWidth, scaledHeight)
-
-    ctx.save()
-    ctx.scale(-1, 1)
-    ctx.drawImage(img, frameX * width, frameY * height, width, height,
-                -canvasX - scaledWidth, canvasY, scaledWidth, scaledHeight)
-    ctx.restore()
-}
-
-// function drawFrame2(frameX, frameY, canvasX, canvasY) {
-//     ctx.save()
-//     ctx.scale(-1, 1)
-//     ctx.drawImage(img2, frameX * width, frameY * height, width, height,
-//                   -canvasX - scaledWidth, canvasY, scaledWidth, scaledHeight)
-//     ctx.restore()
-// }
-
-// function init() {
-//     window.requestAnimationFrame(step)
-// }
-
-/* function init () {
-    ctx.save();
-    ctx.scale(-1, 1);
-    ctx.drawImage(img, 0, 0, width, height, -scaledWidth, 0, scaledWidth, scaledHeight);
-    ctx.drawImage(img, 16.5, 0, width, height, -scaledWidth * 2, 0, scaledWidth, scaledHeight);
-    ctx.drawImage(img, 0, 0, width, height, -scaledWidth * 3, 0, scaledWidth, scaledHeight);
-    ctx.drawImage(img, 35, 0, width, height, -scaledWidth * 4, 0, scaledWidth, scaledHeight);
-    ctx.restore();
-    window.requestAnimationFrame(animation)
-} */
-
-let bottom = canvas.height - barHeight
+let img = new Image()
+img.src = './dk_title.png'
 
 class Game {
     
     constructor(width, height) {
         this.width = width
         this.height = height
-        this.mario = new Mario(marX, marY, marWidth, marHeight, upPressed, leftPressed, rightPressed)
-        this.dk = new DK(250, -17)
-        //this.barrel = new Barrel(barX, barY, barWidth, barHeight)
+        this.mario = new Mario(200, 608, 35, 52)
+        this.dk = new DK(250, -5, ctx, canvas)
+        this.barrel = new Barrel(350, 90, 35, 52, canvas, ctx)
+        // this.barrel = new Barrel(1245, 608, 35, 52, canvas, ctx)
+        this.score = 0
 
         this.platforms = [
             new Platform(120, 138, 42),
