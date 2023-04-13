@@ -78,87 +78,79 @@ class Game {
         this.dk = new DK(250, -17)
         //this.barrel = new Barrel(barX, barY, barWidth, barHeight)
 
-        this.platform = new Platform(120, 660, 42)
-        this.segment = new Platform(752, 657, 8)
-        this.segment2 = new Platform(875, 654, 8)
-        this.segment3 = new Platform(998, 651, 8)
-        this.segment4 = new Platform(1121, 648, 8)
-        this.segment5 = new Platform(1244, 645, 8)
+        this.platforms = [
+            new Platform(120, 138, 42),
+            new Platform(120, 660, 42),
+            new Platform(752, 657, 8),
+            new Platform(875, 654, 8),
+            new Platform(998, 651, 8),
+            new Platform(1121, 648, 8),
+            new Platform(1244, 645, 8),
 
-        this.platform2 = new Platform(1121, 575, 8)
-        this.segment6 = new Platform(998, 572, 8)
-        this.segment7 = new Platform(875, 569, 8)
-        this.segment8 = new Platform(752, 566, 8)
-        this.segment9 = new Platform(629, 563, 8)
-        this.segment10 = new Platform(506, 561, 8)
-        this.segment11 = new Platform(383, 558, 8)
-        this.segment12 = new Platform(260, 555, 8)
-        this.segment13 = new Platform(182, 552, 5)
+            new Platform(1121, 575, 8),
+            new Platform(998, 572, 8),
+            new Platform(875, 569, 8),
+            new Platform(752, 566, 8),
+            new Platform(629, 563, 8),
+            new Platform(506, 561, 8),
+            new Platform(383, 558, 8),
+            new Platform(260, 555, 8),
+            new Platform(182, 552, 5),
 
-        this.segment14 = new Platform(260, 475, 8)
-        this.segment15 = new Platform(383, 470, 8)
-        this.segment16 = new Platform(506, 465, 8)
-        this.segment17 = new Platform(629, 460, 8)
-        this.segment18 = new Platform(752, 455, 8)
-        this.segment19 = new Platform(875, 450, 8)
-        this.segment20 = new Platform(998, 445, 8)
-        this.segment21 = new Platform(1121, 440, 8)
-        this.segment22 = new Platform(1244, 435, 5)
+            new Platform(260, 475 + 8, 8),
+            new Platform(383, 470 + 8, 8),
+            new Platform(506, 465 + 8, 8),
+            new Platform(629, 460 + 8, 8),
+            new Platform(752, 455 + 8, 8),
+            new Platform(875, 450 + 8, 8),
+            new Platform(998, 445 + 8, 8),
+            new Platform(1121, 440 + 8, 8),
+            new Platform(1244, 435 + 8, 5),
 
-        this.segment23 = new Platform(1121, 365, 8)
-        this.segment24 = new Platform(998, 360, 8)
-        this.segment25 = new Platform(875, 355, 8)
-        this.segment26 = new Platform(752, 350, 8)
-        this.segment27 = new Platform(629, 345, 8)
-        this.segment28 = new Platform(506, 340, 8)
-        this.segment29 = new Platform(383, 335, 8)
-        this.segment30 = new Platform(260, 330, 8)
-        this.segment31 = new Platform(182, 325, 5)
+            new Platform(1121, 365 + 10, 8),
+            new Platform(998, 360 + 10, 8),
+            new Platform(875, 355 + 10, 8),
+            new Platform(752, 350 + 10, 8),
+            new Platform(629, 345 + 10, 8),
+            new Platform(506, 340 + 10, 8),
+            new Platform(383, 335 + 10, 8),
+            new Platform(260, 330 + 10, 8),
+            new Platform(182, 325 + 10, 5),
 
-        this.segment32 = new Platform(260, 253, 8)
-        this.segment33 = new Platform(383, 248, 8)
-        this.segment34 = new Platform(506, 243, 8)
-        this.segment35 = new Platform(629, 238, 8)
-        this.segment36 = new Platform(752, 233, 8)
-        this.segment37 = new Platform(875, 228, 8)
-        this.segment38 = new Platform(998, 223, 8)
-        this.segment39 = new Platform(1121, 218, 8)
-        this.segment40 = new Platform(1244, 213, 5)
+            new Platform(260, 253 + 15, 8),
+            new Platform(383, 248 + 15, 8),
+            new Platform(506, 243 + 15, 8),
+            new Platform(629, 238 + 15, 8),
+            new Platform(752, 233 + 15, 8),
+            new Platform(875, 228 + 15, 8),
+            new Platform(998, 223 + 15, 8),
+            new Platform(1121, 218 + 15, 8),
+            new Platform(1244, 213 + 15, 5),
 
-        this.segment41 = new Platform(1121, 126, 8)
-        this.segment42 = new Platform(998, 121, 8)
-        this.segment43 = new Platform(875, 116, 8)
-        this.segment44 = new Platform(752, 111, 8)
+            new Platform(1121, 158, 8),
+            new Platform(998, 153, 8),
+            new Platform(875, 148, 8),
+            new Platform(752, 143, 8),
 
-        this.dkPlatform = new Platform(120, 106, 42)
+            new Platform(500, 37 + 20, 25),
 
-        this.ladder = new Ladder(1125, 615, 38)
-        this.ladder2 = new Ladder(1125, 595, 38)
+            new Platform(408, 60 + 20, 6),
+        ]
 
-        this.ladder3 = new Ladder(350, 518, 38)
-        this.ladder4 = new Ladder(350, 498, 38)
+        //this.dkPlatform = new Platform(120, 106 + 32, 42)
 
-        this.ladder5 = new Ladder(1125, 405, 38)
-        this.ladder6 = new Ladder(1125, 385, 38)
-
-        this.ladder7 = new Ladder(350, 295, 38)
-        this.ladder8 = new Ladder(350, 275, 38)
-
-        this.ladder9 = new Ladder(1125, 148, 38)
-        this.ladder10 = new Ladder(1125, 180, 38)
-
-        this.ladder11 = new Ladder(680, 525, 38)
-        this.ladder12 = new Ladder(680, 505, 38)
-        this.ladder13 = new Ladder(680, 485, 38)
-
-        this.ladder14 = new Ladder(760, 418, 38)
-        this.ladder15 = new Ladder(760, 387, 38)
-        this.ladder16 = new Ladder(760, 373, 38)
-
-    }
-
-    sprites() {
-        init()
+        this.ladders = [
+            new Ladder(1125, 612, 1),
+            new Ladder(350, 521, 1),
+            new Ladder(1125, 413, 1),
+            new Ladder(350, 306, 1),
+            new Ladder(1125, 196, 1),
+            new Ladder(680, 525, 2),
+            new Ladder(760, 428, 3),
+            new Ladder(845, 110, 2),
+            new Ladder(410, 100, 4),
+            new Ladder(470, 100, 4),
+        ]
     }
 
     draw(ctx) {
