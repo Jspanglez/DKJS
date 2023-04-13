@@ -134,14 +134,27 @@ export class Mario {
         let marioTop = this.y
         let marioBottom = this.y + this.height
       
-        // Check if any of the four corners overlap with the platform
-        if (marioBottom > platform.y && marioTop < platform.y + 24 &&
-            marioRight > platform.x && marioLeft < platform.x + 170) {
+    get marioBottom() {
+        return this.y + this.height
+    }
+
+    collision(platform) {
+        // Check if the bottom of Mario overlaps with the platform
+        if (this.marioBottom > platform.y && this.marioBottom - this.speed < platform.y + 24 &&
+            this.x + this.width - 7 > platform.x && this.x < platform.x + (platform.w * 20) -50) {
           // Collision detected
+          this.currentPlatform = platform
+          this.isJumping = false
           this.y = platform.y - this.height
+          this.force = 5
           this.speed = 0
         }
+
+        /* else {
+            // No collision, Mario is falling
+            this.currentPlatform = null
     } */
+    }
 
     collision(ctx, platform, length) {
         // Calculate the x and y coordinates of the bottom of the Mario object
