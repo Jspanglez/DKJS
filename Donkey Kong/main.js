@@ -8,9 +8,13 @@ const canvas = document.getElementById("myCanvas")
 const ctx = canvas.getContext("2d", { willReadFrequently: true })
 
 let gameState = "title"
+let character = "Mario"
 
 let img = new Image()
 img.src = './dk_title.png'
+
+let sprites = new Image()
+sprites.src = './mario_and_luigi_sprites.png'
 
 class Game {
     
@@ -137,15 +141,87 @@ class Game {
         ctx.fillText("Press Enter to Start", this.width / 2, 500)
 
         // Add event listener for enter key press to start the game
-        document.addEventListener("keydown", this.startGame)
+        document.addEventListener("keydown", (event) => this.startSelect(event))
+    }
+
+    startSelect(event) {
+        if (event.key === "Enter" && gameState === "title") {
+
+            document.removeEventListener("keydown", (event) => this.startSelect(event))
+            
+            gameState = "character"
+
+            this.characterSelect()
+        }
+    }
+
+    characterSelect() {
+        ctx.clearRect(0, 0, this.width, this.height)
+
+        ctx.fillStyle = 'white'
+        ctx.font = '16px "Press Start 2P", Arial'
+        ctx.textAlign = "center"
+        ctx.fillText("Select your character", this.width / 2, 200)
+
+        ctx.save()
+        ctx.scale(-1, 1)
+
+        ctx.drawImage(sprites, 17, 4, 15, 19, -600 - 60, 300, 60, 90)
+        ctx.drawImage(sprites, 409, 122, 15, 19, -850 - 60, 300, 60, 90)
+
+        ctx.strokeStyle = 'white' // color of the border
+        ctx.lineWidth = 2 // width of the border
+
+        // Draw a border around the image
+        // ctx.strokeRect(-600 - 60, 300, w, h)
+        // ctx.strokeRect(-850 - 60, 300, w, h)
+
+        ctx.restore()
+
+        ctx.fillText("Mario", 632, 420)
+        ctx.fillText("Luigi", 882, 420)
+
+        if (character === "Mario") {
+            ctx.fillStyle = "red"
+            ctx.fillText("Mario", 632, 420)
+            ctx.fillStyle = "white"
+            ctx.fillText("Luigi", 882, 420)
+        } else if (character === "Luigi") {
+            ctx.fillStyle = "green"
+            ctx.fillText("Luigi", 882, 420)
+            ctx.fillStyle = "white"
+            ctx.fillText("Mario", 632, 420)
+        }
+
+        function choose(event) {
+            if (event.key === "a") {
+                character = "Mario"
+                ctx.fillStyle = "red"
+                ctx.fillText("Mario", 632, 420)
+                ctx.fillStyle = "white"
+                ctx.fillText("Luigi", 882, 420)
+            } else if (event.key === "d") {
+                character = "Luigi"
+                ctx.fillStyle = "green"
+                ctx.fillText("Luigi", 882, 420)
+                ctx.fillStyle = "white"
+                ctx.fillText("Mario", 632, 420)
+            }
+        }
+        
+        document.addEventListener("keydown", choose)
+
+        document.addEventListener("keydown", (event) => this.startGame(event))
     }
 
     startGame(event) {
-        if (event.key === "Enter" && gameState === "title") {
+        if (event.key === "Enter" && gameState === "character") {
             // Remove event listener
-            document.removeEventListener("keydown", this.startGame)
-            // Change game state to "game"
+            document.removeEventListener("keydown", (event) => this.startGame(event))
+            document.removeEventListener("keydown", choose)
+            
             gameState = "game"
+
             // Call the update function to start the game loop
             update()
         }
@@ -167,6 +243,10 @@ function update() {
 
     else if (gameState == "title") {
         game.showTitleScreen()
+    }
+
+    else if (gameState == "character") {
+        game.characterSelect()
     }
 }
 
