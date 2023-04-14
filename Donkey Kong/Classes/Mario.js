@@ -31,9 +31,6 @@ export class Mario {
         this.height = height
         this.force = 5
         this.speed = 0
-        this.up = up
-        this.left = left
-        this.right = right
         this.keys = keys
         this.currentPlatform = null
         this.currentLadder = null
