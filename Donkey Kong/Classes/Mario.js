@@ -24,7 +24,7 @@ let img = new Image()
 img.src = './mario_and_luigi_sprites.png'
 
 export class Mario {
-    constructor(x, y, width, height, up, left, right) {
+    constructor(x, y, width, height) {
         this.x = x
         this.y = y
         this.width = width
