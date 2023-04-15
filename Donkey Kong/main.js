@@ -131,17 +131,23 @@ class Game {
         // Clear canvas
         ctx.clearRect(0, 0, this.width, this.height)
 
-        // Draw title screen
-        const x = (this.width - 700) / 2
-        ctx.drawImage(img, x, 10, 700, 400)
+        const img = new Image()
+        img.src = './dk_title.png'
 
-        ctx.fillStyle = 'white'
-        ctx.font = '16px "Press Start 2P", Arial'
-        ctx.textAlign = "center"
-        ctx.fillText("Press Enter to Start", this.width / 2, 500)
+        img.onload = () => {
+            // Draw title screen
+            const x = (this.width - 700) / 2
+            ctx.drawImage(img, x, 10, 700, 400)
+    
+            ctx.fillStyle = 'white'
+            ctx.font = '16px "Press Start 2P", Arial'
+            ctx.textAlign = "center"
+            ctx.fillText("Press Enter to Start", this.width / 2, 500)
+    
+            // Add event listener for enter key press to start the game
+            document.addEventListener("keydown", (event) => this.startSelect(event))
+        }
 
-        // Add event listener for enter key press to start the game
-        document.addEventListener("keydown", (event) => this.startSelect(event))
     }
 
     startSelect(event) {
