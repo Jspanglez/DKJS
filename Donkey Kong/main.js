@@ -10,9 +10,6 @@ const ctx = canvas.getContext("2d", { willReadFrequently: true })
 let gameState = "title"
 let character = "Mario"
 
-let img = new Image()
-img.src = './dk_title.png'
-
 let sprites = new Image()
 sprites.src = './mario_and_luigi_sprites.png'
 
@@ -21,11 +18,29 @@ class Game {
     constructor(width, height) {
         this.width = width
         this.height = height
-        this.mario = new Mario(200, 608, 35, 52)
+        this.mario = new Mario(200, 608, 35, 52, character)
         this.dk = new DK(250, -5, ctx, canvas)
         this.barrel = new Barrel(350, 90, 35, 52, canvas, ctx)
         // this.barrel = new Barrel(1245, 608, 35, 52, canvas, ctx)
         this.score = 0
+
+        this.choose = (event) => {
+            if (event.key === "a") {
+                character = "Mario"
+                ctx.fillStyle = "red"
+                ctx.fillText("Mario", 632, 420)
+                ctx.fillStyle = "white"
+                ctx.fillText("Luigi", 882, 420)
+            } 
+            
+            else if (event.key === "d") {
+                character = "Luigi"
+                ctx.fillStyle = "lime"
+                ctx.fillText("Luigi", 882, 420)
+                ctx.fillStyle = "white"
+                ctx.fillText("Mario", 632, 420)
+            }
+        }
 
         this.platforms = [
             new Platform(120, 138, 42),
@@ -115,7 +130,7 @@ class Game {
     }
 
     updateMario() {
-        this.mario.update(ctx, this.platforms, this.ladders)
+        this.mario.update(ctx, this.platforms, this.ladders, character)
     }
 
     updateBarrel() {
@@ -162,6 +177,7 @@ class Game {
     }
 
     characterSelect() {
+
         ctx.clearRect(0, 0, this.width, this.height)
 
         ctx.fillStyle = 'white'
@@ -175,13 +191,6 @@ class Game {
         ctx.drawImage(sprites, 17, 4, 15, 19, -600 - 60, 300, 60, 90)
         ctx.drawImage(sprites, 409, 122, 15, 19, -850 - 60, 300, 60, 90)
 
-        ctx.strokeStyle = 'white' // color of the border
-        ctx.lineWidth = 2 // width of the border
-
-        // Draw a border around the image
-        // ctx.strokeRect(-600 - 60, 300, w, h)
-        // ctx.strokeRect(-850 - 60, 300, w, h)
-
         ctx.restore()
 
         ctx.fillText("Mario", 632, 420)
@@ -192,30 +201,16 @@ class Game {
             ctx.fillText("Mario", 632, 420)
             ctx.fillStyle = "white"
             ctx.fillText("Luigi", 882, 420)
-        } else if (character === "Luigi") {
-            ctx.fillStyle = "green"
+        } 
+        
+        else if (character === "Luigi") {
+            ctx.fillStyle = "lime"
             ctx.fillText("Luigi", 882, 420)
             ctx.fillStyle = "white"
             ctx.fillText("Mario", 632, 420)
         }
-
-        function choose(event) {
-            if (event.key === "a") {
-                character = "Mario"
-                ctx.fillStyle = "red"
-                ctx.fillText("Mario", 632, 420)
-                ctx.fillStyle = "white"
-                ctx.fillText("Luigi", 882, 420)
-            } else if (event.key === "d") {
-                character = "Luigi"
-                ctx.fillStyle = "green"
-                ctx.fillText("Luigi", 882, 420)
-                ctx.fillStyle = "white"
-                ctx.fillText("Mario", 632, 420)
-            }
-        }
         
-        document.addEventListener("keydown", choose)
+        document.addEventListener("keydown", this.choose)
 
         document.addEventListener("keydown", (event) => this.startGame(event))
     }
@@ -224,7 +219,7 @@ class Game {
         if (event.key === "Enter" && gameState === "character") {
             // Remove event listener
             document.removeEventListener("keydown", (event) => this.startGame(event))
-            document.removeEventListener("keydown", choose)
+            document.removeEventListener("keydown", this.choose)
             
             gameState = "game"
 
