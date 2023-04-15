@@ -24,11 +24,12 @@ let img = new Image()
 img.src = './mario_and_luigi_sprites.png'
 
 export class Mario {
-    constructor(x, y, width, height) {
+    constructor(x, y, width, height, character) {
         this.x = x
         this.y = y
         this.width = width
         this.height = height
+        this.character = character
         this.force = 5
         this.speed = 0
         this.keys = keys
@@ -88,37 +89,66 @@ export class Mario {
             }
         });
     }
+
+    setCharacter(character) {
+        this.character = character
+    }
       
     drawMario(ctx) {
+
+        let x
+        let y
+        let jump
+
+        if (this.character == "Mario") {
+            x = 0
+            y = 4
+            jump = 53 
+        }
+
+        else if (this.character == "Luigi") {
+            x = 393
+            y = 122
+            jump = 445
+        }
+
         ctx.save()
       
         if (this.facingLeft) {
 
-          if (this.isJumping) {
-            ctx.drawImage(img, 53, 0, 15, 22, this.x, this.y, this.width, this.height)
-          } 
-          
-          /* Mario is moving left */
-          else {
-            ctx.drawImage(img, 0, 0, 15, 22, this.x, this.y, this.width, this.height)
-          }
-        } 
+            /* Jumping while facing left */
+            if (this.isJumping) {
+                ctx.drawImage(img, jump, y, 15, 18, this.x, this.y, this.width, this.height)
+            } 
+            
+            /* Mario is moving left */
+            else {
+                ctx.drawImage(img, x, y, 15, 18, this.x, this.y, this.width, this.height)
+            }
+        }
         
         else {
-          ctx.save()
-          ctx.scale(-1, 1)
+            ctx.save()
+            ctx.scale(-1, 1)
 
-          if (this.isJumping) {
-            ctx.drawImage(img, 53, 0, 15, 22, -this.x - this.width, this.y, this.width, this.height)
-          } 
-          
-          /* Mario is moving right */
-          else {
-            ctx.drawImage(img, 0, 0, 15, 22, -this.x - this.width, this.y, this.width, this.height)
-          }
+            /* Jumping while facing right */
+            if (this.isJumping) {
+                ctx.drawImage(img, jump, y, 15, 18, -this.x - this.width, this.y, this.width, this.height)
+            } 
+            
+            /* Mario is moving right */
+            else {
+                ctx.drawImage(img, x, y, 15, 18, -this.x - this.width, this.y, this.width, this.height)
+            }
 
-          ctx.restore()
+            ctx.restore()
         }
+
+        ctx.strokeStyle = 'white' // color of the border
+        ctx.lineWidth = 2 // width of the border
+
+        // Draw a border around the image
+        //ctx.strokeRect(this.x, this.y, this.width, this.height)
       
         ctx.restore()
     }
@@ -233,7 +263,9 @@ export class Mario {
         }
     }
 
-    update(ctx, platforms, ladders) {
+    update(ctx, platforms, ladders, character) {
+        this.setCharacter(character)
+
         this.gravity()
 
         this.move()
