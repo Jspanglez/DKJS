@@ -5,12 +5,12 @@ let img2 = new Image()
 img2.src = './mario_and_luigi_sprites.png'
 
 export class DK {
-	constructor(x, y, ctx, canvas) {
+	constructor(x, y, ctx, dkCtx, frameCount) {
 		this.x = x
 		this.y = y
 		this.ctx = ctx
-		this.canvas = canvas
-		this.frameCount = 0
+		this.dkCtx = dkCtx
+		this.frameCount = frameCount
 		this.loop = [
 		[132, 45],
 		[334, 45],
@@ -22,24 +22,21 @@ export class DK {
 		[280, 50]
 		]
 		this.loopIndex = 0
+        this.isThrowing = false
+        this.throwingDelay = 100
+        this.throwingTimer = null
         this.visible = true
         this.counter = 0
         this.displayDuration = 1000
         this.hideDuration = 1000
         this.startTime = 0
+        /* this.dkCanvas = document.createElement('canvas')
+        this.dkCtx = this.dkCanvas.getContext('2d') */
+        /* this.dkCanvas.width = 140
+        this.dkCanvas.height = 144 */
 	}
 
-	drawDK(ctx) {
-		/* Donkey Kong */
-		// ctx.drawImage(img, 132, 50, 40, 38, this.x, this.y, 120, 124)
-		// ctx.drawImage(img, 332, 50, 50, 38, this.x, this.y, spriteWidth, spriteHeight)
-		// ctx.drawImage(img, 382, 50, 50, 38, this.x, this.y, spriteWidth, spriteHeight)
-		// ctx.drawImage(img, 332, 50, 50, 38, this.x, this.y, spriteWidth, spriteHeight)
-		// ctx.drawImage(img, 382, 50, 50, 38, this.x, this.y, spriteWidth, spriteHeight)
-		// ctx.drawImage(img, 181, 50, 45, 38, this.x, this.y, spriteWidth, spriteHeight)
-		// ctx.drawImage(img, 618, 50, 40, 38, this.x, this.y, spriteWidth, spriteHeight)
-		// ctx.drawImage(img, 280, 50, 45, 38, this.x, this.y, spriteWidth, spriteHeight)
-		
+	drawDK(ctx) {	
 		/* Stationary barrels */
 		ctx.drawImage(img2, 59.5, 109, 15, 16, 150, 88, 50, 50)
 		ctx.drawImage(img2, 59.5, 109, 15, 16, 150, 40, 50, 50)
@@ -93,23 +90,37 @@ export class DK {
 
 	step() {
 		this.frameCount++
-		if (this.frameCount == 90) {
-		this.frameCount = 0
-		this.ctx.clearRect(this.x, this.y, 120, 124)
-		const frameData = this.loop[this.loopIndex]
-		this.drawFrame(frameData)
-		//this.drawFrame(this.loop[this.currentLoopIndex])
-		this.loopIndex++
+		if (this.frameCount == 80) {
+            this.frameCount = 0
+            this.dkCtx.clearRect(0, 0, 140, 144)
+            const frameData = this.loop[this.loopIndex]
+            this.drawFrame(frameData, this.dkCtx)
+            this.loopIndex++
 
-			if (this.loopIndex >= this.loop.length) {
-				this.loopIndex = 0
-			}
+            if (this.loopIndex >= this.loop.length) {
+                this.loopIndex = 0
+            }
 		}
 	}
 
     update(ctx) {
-        this.drawDK(ctx)
+        //this.ctx.drawImage(this.dkCanvas, this.x, this.y)
+        /* this.dkCtx.clearRect(0, 0, this.dkCanvas.width, this.dkCanvas.height)
+            
+        // Update the Donkey Kong sprite on its own canvas
+        const frameData = this.loop[this.loopIndex]
+        this.drawFrame(frameData)
+        this.loopIndex++
+
+        if (this.loopIndex >= this.loop.length) {
+            this.loopIndex = 0
+        }
+
+        // Draw the updated Donkey Kong canvas onto the main canvas
+        this.ctx.drawImage(this.dkCanvas, this.x, this.y)  */
+
         this.step()
+        this.drawDK(ctx)
         this.drawHelp(ctx)
     }
 }
