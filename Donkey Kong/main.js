@@ -7,8 +7,15 @@ import {Ladder} from "./Classes/Ladder.js"
 const canvas = document.getElementById("myCanvas")
 const ctx = canvas.getContext("2d", { willReadFrequently: true })
 
+const dkCanvas = document.getElementById("dkCanvas")
+const dkCtx = dkCanvas.getContext('2d')
+
+dkCanvas.style.left = '250px'
+dkCanvas.style.top = '2px'
+
 let gameState = "title"
 let character = "Mario"
+let isGameStarted = false
 
 let sprites = new Image()
 sprites.src = './mario_and_luigi_sprites.png'
@@ -19,9 +26,9 @@ class Game {
         this.width = width
         this.height = height
         this.mario = new Mario(200, 608, 35, 52, character)
-        this.dk = new DK(250, -5, ctx, canvas)
-        this.barrel = new Barrel(350, 90, 35, 52, canvas, ctx)
-        // this.barrel = new Barrel(1245, 608, 35, 52, canvas, ctx)
+        this.dk = new DK(250, -5, ctx, dkCtx, 0)
+        this.barrel = new Barrel(350, 90, 27, 42, canvas, ctx, this.dk)
+        //this.barrel = new Barrel(1245, 608, 27, 42, canvas, ctx, isGameStarted, this.dk)
         this.score = 0
 
         this.choose = (event) => {
@@ -125,8 +132,6 @@ class Game {
         for(const platform of this.platforms) {
             platform.drawPlatform(ctx)
         }
-
-        this.dk.drawDK(ctx)
     }
 
     updateMario() {
@@ -134,11 +139,10 @@ class Game {
     }
 
     updateBarrel() {
-        this.barrel.update(ctx, this.platforms, this.mario)
+        this.barrel.update(ctx, this.platforms, this.mario, isGameStarted)
     }
 
     updateDK() {
-        /* this.dk.step() */
         this.dk.update(ctx)
     }
 
@@ -217,6 +221,7 @@ class Game {
 
     startGame(event) {
         if (event.key === "Enter" && gameState === "character") {
+
             // Remove event listener
             document.removeEventListener("keydown", (event) => this.startGame(event))
             document.removeEventListener("keydown", this.choose)
@@ -232,9 +237,15 @@ class Game {
 const game = new Game(canvas.width, canvas.height)
 
 function update() {
+    /* dkCtx.fillStyle = "gold"
+    dkCtx.fillRect(0, 0, 140, 144) */
+
+
+    
+    ctx.clearRect(0, 0, canvas.width, canvas.height)
 
     if (gameState == "game") {
-        ctx.clearRect(0, 0, canvas.width, canvas.height)
+        isGameStarted = true
         game.draw(ctx)
         game.updateMario()
         game.updateBarrel()
