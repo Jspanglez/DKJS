@@ -72,7 +72,23 @@ export class DK {
 	drawFrame(frameData) {
 		const x = frameData[0]
     	const width = frameData[1]
-		this.ctx.drawImage(img, x, 50, width, 38, this.x, this.y, 120 + 20, 124 + 20)
+		this.dkCtx.drawImage(img, x, 50, width, 38, 0, 0, 140, 144)
+
+        if (x == 280) {
+            if (!this.isThrowing) {
+                // Start timer and set isThrowing to true
+                this.throwingTimer = setTimeout(() => {
+                    this.isThrowing = false
+                }, this.throwingDelay)
+                this.isThrowing = true
+            }
+        } 
+          
+        else {
+            // Reset timer and set isThrowing to false
+            clearTimeout(this.throwingTimer)
+            this.isThrowing = false
+        }
 	}
 
 	step() {
