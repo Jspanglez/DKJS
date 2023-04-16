@@ -148,7 +148,7 @@ export class Mario {
         ctx.lineWidth = 2 // width of the border
 
         // Draw a border around the image
-        //ctx.strokeRect(this.x, this.y, this.width, this.height)
+        ctx.strokeRect(this.x, this.y, this.width, this.height)
       
         ctx.restore()
     }
