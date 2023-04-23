@@ -37,7 +37,5 @@ export class Ladder {
             ctx.drawImage(img, 130, 151.5, 10, 9, this.x, this.y - 75, 38, 38)
             ctx.drawImage(img, 130, 151.5, 10, 9, this.x, this.y - 90, 38, 38)
         }
-        
     }
-
 }
