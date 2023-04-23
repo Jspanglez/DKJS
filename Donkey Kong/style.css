@@ -1,5 +1,11 @@
 @import url('https://fonts.googleapis.com/css?family=Press Start 2P');
 
+/* @font-face {
+  font-family: "Press Start 2P";
+  src: url('./PressStart2P-Regular.ttf');
+} */
+
 body {
   background-color: black;
+  font-family: "Press Start 2P";
 }
