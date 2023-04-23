@@ -1,3 +1,5 @@
+import {sprites} from "./sprites.js"
+
 let img = new Image()
 img.src = './DK_sprites.png'
 
@@ -5,12 +7,9 @@ let img2 = new Image()
 img2.src = './mario_and_luigi_sprites.png'
 
 export class DK {
-	constructor(x, y, ctx, dkCtx, frameCount) {
+	constructor(x, y) {
 		this.x = x
 		this.y = y
-		this.ctx = ctx
-		this.dkCtx = dkCtx
-		this.frameCount = frameCount
 		this.loop = [
 		[132, 45],
 		[334, 45],
@@ -23,17 +22,17 @@ export class DK {
 		]
 		this.loopIndex = 0
         this.isThrowing = false
-        this.throwingDelay = 100
+        this.hasThrown = false
+        this.throwingDelay = 10
+        this.thrownDelay = 900
         this.throwingTimer = null
+        this.thrownTimer = null
         this.visible = true
-        this.counter = 0
         this.displayDuration = 1000
         this.hideDuration = 1000
         this.startTime = 0
-        /* this.dkCanvas = document.createElement('canvas')
-        this.dkCtx = this.dkCanvas.getContext('2d') */
-        /* this.dkCanvas.width = 140
-        this.dkCanvas.height = 144 */
+        this.timeSinceLastFrameChange = 0
+        this.timeBetweenFrames = 600
 	}
 
 	drawDK(ctx) {	
@@ -69,17 +68,19 @@ export class DK {
 	drawFrame(frameData) {
 		const x = frameData[0]
     	const width = frameData[1]
-		this.dkCtx.drawImage(img, x, 50, width, 38, 0, 0, 140, 144)
+        this.sprites.drawSpriteDK(x, 50, width, 38, this.x, this.y, 140, 144)
 
-        if (x == 280) {
-            if (!this.isThrowing) {
-                // Start timer and set isThrowing to true
-                this.throwingTimer = setTimeout(() => {
-                    this.isThrowing = false
-                }, this.throwingDelay)
-                this.isThrowing = true
-            }
-        } 
+        if (x == 280 && !this.hasThrown) {
+            // Start timer and set isThrowing to true
+            this.isThrowing = true
+            this.throwingTimer = setTimeout(() => {
+                this.isThrowing = false
+            }, this.throwingDelay)
+            this.hasThrown = true
+            this.thrownTimer = setTimeout(() => {
+                this.hasThrown = false
+            }, this.thrownDelay)
+        }
           
         else {
             // Reset timer and set isThrowing to false
@@ -88,38 +89,24 @@ export class DK {
         }
 	}
 
-	step() {
-		this.frameCount++
-		if (this.frameCount == 80) {
-            this.frameCount = 0
-            this.dkCtx.clearRect(0, 0, 140, 144)
-            const frameData = this.loop[this.loopIndex]
-            this.drawFrame(frameData, this.dkCtx)
-            this.loopIndex++
+	step(ctx, elapsed) {
+        this.sprites = new sprites(ctx)
 
+        this.timeSinceLastFrameChange += elapsed
+        if (this.timeSinceLastFrameChange >= this.timeBetweenFrames) {
+            this.timeSinceLastFrameChange = 0
+            this.loopIndex++
             if (this.loopIndex >= this.loop.length) {
                 this.loopIndex = 0
             }
-		}
-	}
-
-    update(ctx) {
-        //this.ctx.drawImage(this.dkCanvas, this.x, this.y)
-        /* this.dkCtx.clearRect(0, 0, this.dkCanvas.width, this.dkCanvas.height)
-            
-        // Update the Donkey Kong sprite on its own canvas
-        const frameData = this.loop[this.loopIndex]
-        this.drawFrame(frameData)
-        this.loopIndex++
-
-        if (this.loopIndex >= this.loop.length) {
-            this.loopIndex = 0
         }
 
-        // Draw the updated Donkey Kong canvas onto the main canvas
-        this.ctx.drawImage(this.dkCanvas, this.x, this.y)  */
+        const frameData = this.loop[this.loopIndex]
+        this.drawFrame(frameData)
+	}
 
-        this.step()
+    update(ctx, elapsed) {
+        this.step(ctx, elapsed)
         this.drawDK(ctx)
         this.drawHelp(ctx)
     }
