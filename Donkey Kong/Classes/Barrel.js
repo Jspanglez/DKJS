@@ -1,94 +1,95 @@
+import {sprites} from "./sprites.js"
+
 let img = new Image()
 img.src = './mario_and_luigi_sprites.png'
 
 export class Barrel {
-    constructor(x, y, width, height, canvas, ctx, DK) {
+    constructor(x, y, width, height) {
         this.x = x
         this.y = y
         this.width = width
         this.height = height
-        this.canvas = canvas
-        this.ctx = ctx
-        this.DK = DK
         this.force = 0.5
         this.currentPlatform = null
         this.left = false
         this.right = false
-        this.rollingRight = [1.5, 16.5, 31.5, 46.5]
-        this.rollingLeft = [46.5, 31.5, 16.5, 1.5]
-        this.rollingDown = [1.5, 20.5]
-        this.currentLoopIndex = 0
-        this.frameCount = 0
-        this.barrels = []
-        this.lastBarrelTimestamp = Date.now()
-        this.score = 0
+        this.rollingLeft = [45, 30, 15, 0]
+        this.rollingRight = [0, 15, 30, 45]
+        this.rollingDown = [59, 78]
+        this.loopIndex = 0
         this.scored = false
-        this.lives = 3
+        this.hasScored = false
+        this.scoreTimer = null
+        this.scoreDelay = 800
         this.dead = false
-        this.gameOver = false
-        this.frozen = false
+        this.timeSinceLastFrameChange = 0
+        this.timeBetweenFrames = 100
     }
 
-    /* drawBarrel(ctx) {
-        ctx.drawImage(img, 1.5, 106, 13, 15, this.x + 150, this.y, this.width, this.height)
-        ctx.drawImage(img, 16.5, 106, 13, 15, this.x + 200, this.y, this.width, this.height)
-        ctx.drawImage(img, 31.5, 106, 13, 15, this.x + 250, this.y, this.width, this.height)
-        ctx.drawImage(img, 46.5, 106, 13, 15, this.x + 300, this.y, this.width, this.height)
-    } */
-
     drawFrame(frameX) {
-        this.ctx.drawImage(img, frameX, 109, 13, 12, this.x, this.y, this.width, this.height)
+        this.sprites.drawSpriteBarrel(frameX, 0, 13, 12, this.x, this.y, this.width, this.height)
 
-        this.ctx.strokeStyle = 'white'
-        this.ctx.lineWidth = 2
+        // this.ctx.strokeStyle = 'white'
+        // this.ctx.lineWidth = 1
 
         // Draw a border around the image
-        this.ctx.strokeRect(this.x, this.y, this.width, this.height)
-        this.ctx.strokeRect(this.x, this.y - 20, this.width, 1)
+        //this.ctx.strokeRect(this.x, this.y, this.width, this.height)
+        //this.ctx.strokeRect(this.x, this.y - 20, this.width, 1)
     }
 
     drawFalling(x) {
-        this.ctx.drawImage(img, x, 135, 15, 17, this.x, this.y, this.width + 5, this.height + 5)
+        this.sprites.drawSpriteBarrel(x, 0, 17, 18, this.x, this.y, this.width + 5, this.height + 5)
+
+        // this.ctx.strokeStyle = 'white'
+        // this.ctx.lineWidth = 1
+
+        // Draw a border around the image
+        //this.ctx.strokeRect(this.x, this.y, this.width, this.height - 15)
     }
 
-    step() {
-
-        this.frameCount++
+    step(ctx, elapsed) {
+        this.sprites = new sprites(ctx)
 
         if (this.right) {
-            if (this.frameCount == 15) {
-                this.frameCount = 0
-                this.drawFrame(this.rollingRight[this.currentLoopIndex])
-                this.currentLoopIndex++
-        
-                if (this.currentLoopIndex >= this.rollingRight.length) {
-                    this.currentLoopIndex = 0
+            this.timeSinceLastFrameChange += elapsed
+            if (this.timeSinceLastFrameChange >= this.timeBetweenFrames) {
+                this.timeSinceLastFrameChange = 0
+                this.loopIndex++
+                
+                if (this.loopIndex >= this.rollingRight.length) {
+                    this.loopIndex = 0
                 }
+
             }
+            this.drawFrame(this.rollingRight[this.loopIndex])
         }
 
         else if (this.left) {
-            if (this.frameCount == 15) {
-                this.frameCount = 0
-                this.drawFrame(this.rollingLeft[this.currentLoopIndex])
-                this.currentLoopIndex++
-        
-                if (this.currentLoopIndex >= this.rollingLeft.length) {
-                    this.currentLoopIndex = 0
+            this.timeSinceLastFrameChange += elapsed
+            if (this.timeSinceLastFrameChange >= this.timeBetweenFrames) {
+                this.timeSinceLastFrameChange = 0
+                this.loopIndex++
+                
+                if (this.loopIndex >= this.rollingLeft.length) {
+                    this.loopIndex = 0
                 }
+
             }
+            this.drawFrame(this.rollingLeft[this.loopIndex])
         }
 
         else if (!this.left && !this.right) {
-            if (this.frameCount == 15) {
-                this.frameCount = 0
-                this.drawFalling(this.rollingDown[this.currentLoopIndex])
-                this.currentLoopIndex++
-        
-                if (this.currentLoopIndex >= this.rollingDown.length) {
-                    this.currentLoopIndex = 0
+            this.timeSinceLastFrameChange += elapsed
+            if (this.timeSinceLastFrameChange >= this.timeBetweenFrames) {
+                this.timeSinceLastFrameChange = 0
+                this.loopIndex++
+                
+                if (this.loopIndex >= this.rollingDown.length) {
+                    this.loopIndex = 0
                 }
+
             }
+            this.drawFalling(this.rollingDown[this.loopIndex])
         }
     }
     
@@ -115,15 +116,15 @@ export class Barrel {
             this.left = false
         }
     
-        if (this.y === 176 || this.y === 391 || this.y === 593) {
+        if (this.y === 186 || this.y === 401 || this.y === 603) {
             this.left = true
         } 
         
-        else if (this.x === 225 && this.y < 608) {
+        else if (this.x === 230 && this.y < 608) {
             this.left = false
         }
     
-        if (this.y === 283 || this.y === 500) {
+        if (this.y === 287 || this.y === 507) {
             this.right = true
         }
     
@@ -179,10 +180,10 @@ export class Barrel {
 
         /* Losing a life */
 
-        else if (this.barrelLeft < playerRight &&
-                 this.barrelRight > playerLeft &&
-                 this.barrelTop < playerBottom &&
-                 this.barrelBottom > playerTop) {
+        else if (this.barrelLeft + 5 < playerRight &&
+                 this.barrelRight - 5 > playerLeft &&
+                 this.barrelTop + 5 < playerBottom &&
+                 this.barrelBottom - 5 > playerTop) {
             this.dead = true
         }
 
@@ -191,83 +192,15 @@ export class Barrel {
             this.currentPlatform = null
         }
     }
-
-    points(ctx) {
-        ctx.fillStyle = 'white'
-        ctx.font = '16px "Press Start 2P", Arial'
-        ctx.fillText(`Score: ${this.score}`, 90, 20)
-    }
-
-    playerLives(ctx) {
-        ctx.fillStyle = 'white'
-        ctx.font = '16px "Press Start 2P", Arial'
-        const text = `Lives: ${this.lives}`
-        const textWidth = ctx.measureText(text).width
-        const x = this.canvas.width - textWidth - 10 
-        ctx.fillText(text, x + 60, 20)
-    }
-
-    resetGame(player) {
-
-        /* this.frozen = true
-
-        setTimeout(() => {
-            this.frozen = false
-        }, 5000) */
-
-        // Reset player's position to the starting position
-        player.x = 200
-        player.y = 608
-
-        // Reset the barrels
-        this.barrels = []
-
-        // Decrease player's lives
-        this.lives -= 1 
-    }
     
-    update(ctx, platforms, player) {
+    update(ctx, platforms, player, elapsed) {
 
-        /* if (this.frozen) {
-            return
-        } */
-
-        if (this.DK.isThrowing) {
-            this.barrels.push(new Barrel(this.x, this.y, this.width, this.height, this.canvas, this.ctx))
-        }
-
-        // Update each barrel
-        for (let i = 0; i < this.barrels.length; i++) {
-            const barrel = this.barrels[i]
-            barrel.move()
-            barrel.step()
-            barrel.gravity()
-        }
-
+        this.move()
+        this.step(ctx, elapsed)
+        this.gravity()
+        
         for (let i = 0; i < platforms.length; i++) {
-            for (let j = 0; j < this.barrels.length; j++) {
-                this.barrels[j].collision(platforms[i], player)
-            }
-        }
-
-        this.points(ctx)
-        this.playerLives(ctx)
-
-        for (let i = 0; i < this.barrels.length; i++) {
-            if (this.barrels[i].scored) {
-                this.score += 100
-                //this.barrels[i].scored = false
-            }
-        }
-
-        /* for (let i = 0; i < this.barrels.length; i++) {
-            if (this.barrels[i].dead) {
-                this.resetGame(player)
-            }
-        } */
-
-        if (this.lives < 0) {
-            //Game Over
+            this.collision(platforms[i], player)
         }
     }
 }
