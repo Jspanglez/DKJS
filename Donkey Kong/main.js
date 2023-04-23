@@ -7,12 +7,6 @@ import {Ladder} from "./Classes/Ladder.js"
 const canvas = document.getElementById("myCanvas")
 const ctx = canvas.getContext("2d", { willReadFrequently: true })
 
-const dkCanvas = document.getElementById("dkCanvas")
-const dkCtx = dkCanvas.getContext('2d')
-
-dkCanvas.style.left = '250px'
-dkCanvas.style.top = '2px'
-
 let gameState = "title"
 let character = "Mario"
 let isGameStarted = false
@@ -26,10 +20,11 @@ class Game {
         this.width = width
         this.height = height
         this.mario = new Mario(200, 608, 35, 52, character)
-        this.dk = new DK(250, -5, ctx, dkCtx, 0)
-        this.barrel = new Barrel(350, 90, 27, 42, canvas, ctx, this.dk)
-        //this.barrel = new Barrel(1245, 608, 27, 42, canvas, ctx, isGameStarted, this.dk)
+        this.dk = new DK(250, -5)
+        this.barrels = []
         this.score = 0
+        this.highScore = 0
+        this.lives = 3
 
         this.choose = (event) => {
             if (event.key === "a") {
@@ -108,8 +103,6 @@ class Game {
             new Platform(408, 60 + 20, 6),
         ]
 
-        //this.dkPlatform = new Platform(120, 106 + 32, 42)
-
         this.ladders = [
             new Ladder(1125, 612, 1),
             new Ladder(350, 521, 1),
@@ -134,21 +127,87 @@ class Game {
         }
     }
 
-    updateMario() {
-        this.mario.update(ctx, this.platforms, this.ladders, character)
+    updateMario(elapsed) {
+        this.mario.update(ctx, this.platforms, this.ladders, character, elapsed)
     }
 
-    updateBarrel() {
-        this.barrel.update(ctx, this.platforms, this.mario, isGameStarted)
+    updateBarrels(elapsed) {
+
+        if (this.dk.isThrowing) {
+            this.barrels.push(new Barrel(350, 90, 27, 42))
+        }
+
+        for(const barrel of this.barrels) {
+            barrel.update(ctx, this.platforms, this.mario, elapsed)
+        }
     }
 
-    updateDK() {
-        this.dk.update(ctx)
+    updateDK(elapsed) {
+        this.dk.update(ctx, elapsed)
+    }
+
+    getPoints() {
+        for (let i = 0; i < this.barrels.length; i++) {
+            if (this.barrels[i].scored) {
+                this.score += 100
+                this.barrels[i].scored = false
+            }
+        }
+    }
+
+    drawPoints() {
+        ctx.fillStyle = 'white'
+        ctx.font = '16px "Press Start 2P", Arial'
+        ctx.fillText(`Score: ${this.score}`, 90, 20)
+    }
+
+    resetGame() {
+        // Reset player's position to the starting position
+        this.mario.x = 200
+        this.mario.y = 608
+
+        // Reset the barrels
+        this.barrels = []
+    }
+
+    loseLife() {
+        for (let i = 0; i < this.barrels.length; i++) {
+            if (this.barrels[i].dead) {
+                this.lives -= 1 
+                this.resetGame()
+            }
+        }
+    }
+
+    gameOver() {
+        if (this.lives < 0) {
+            gameState = "title"
+        }
+
+        else if (this.mario.y + this.mario.height == 57) {
+            gameState = "title"
+            if (this.score > this.highScore) {
+                this.highScore = this.score
+            }
+        }
+    }
+
+    playerLives() {
+        ctx.fillStyle = 'white'
+        ctx.font = '16px "Press Start 2P", Arial'
+        const text = `Lives: ${this.lives}`
+        const textWidth = ctx.measureText(text).width
+        const x = canvas.width - textWidth - 10 
+        ctx.fillText(text, x + 60, 20)
     }
 
     showTitleScreen() {
         // Clear canvas
         ctx.clearRect(0, 0, this.width, this.height)
+
+        this.lives = 3
+        this.score = 0
+        this.resetGame()
 
         const img = new Image()
         img.src = './dk_title.png'
@@ -162,20 +221,18 @@ class Game {
             ctx.font = '16px "Press Start 2P", Arial'
             ctx.textAlign = "center"
             ctx.fillText("Press Enter to Start", this.width / 2, 500)
+            ctx.fillText(`HIGH SCORE: ${this.highScore}`, this.width / 2, 600)
     
             // Add event listener for enter key press to start the game
-            document.addEventListener("keydown", (event) => this.startSelect(event))
+            document.addEventListener("keydown", this.startSelect)
         }
 
     }
 
-    startSelect(event) {
+    startSelect = (event) => {
         if (event.key === "Enter" && gameState === "title") {
-
-            document.removeEventListener("keydown", (event) => this.startSelect(event))
-            
+            document.removeEventListener("keydown", this.startSelect)
             gameState = "character"
-
             this.characterSelect()
         }
     }
@@ -228,6 +285,8 @@ class Game {
             
             gameState = "game"
 
+            ctx.clearRect(0, 0, canvas.width, canvas.height)
+
             // Call the update function to start the game loop
             update()
         }
@@ -236,21 +295,28 @@ class Game {
 
 const game = new Game(canvas.width, canvas.height)
 
-function update() {
-    /* dkCtx.fillStyle = "gold"
-    dkCtx.fillRect(0, 0, 140, 144) */
+let previous
 
-
-    
+function update(timestamp) {
     ctx.clearRect(0, 0, canvas.width, canvas.height)
 
     if (gameState == "game") {
         isGameStarted = true
+
+        const elapsed = timestamp - previous || 0
+        previous = timestamp
+        
         game.draw(ctx)
-        game.updateMario()
-        game.updateBarrel()
-        game.updateDK()
-        window.requestAnimationFrame(update)
+        game.updateMario(elapsed)
+        game.updateBarrels(elapsed)
+        game.updateDK(elapsed)
+        game.drawPoints()
+        game.playerLives()
+        game.getPoints()
+        game.loseLife()
+        game.gameOver()
+
+        requestAnimationFrame(update)
     }
 
     else if (gameState == "title") {
