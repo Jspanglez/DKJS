@@ -169,8 +169,12 @@ export class Barrel {
           this.y = platform.y - this.height
         }
 
-        else if (player.isJumping && (playerMiddle == this.barrelMiddle && (playerBottom < this.y && playerBottom > this.y - 20))) {
+        else if (!this.hasScored && player.isJumping && ((playerMiddle >= this.barrelMiddle - 2 && playerMiddle <= this.barrelMiddle + 2) && (playerBottom < this.y && playerBottom > this.y - 20))) {
             this.scored = true
+            this.hasScored = true
+            this.scoreTimer = setTimeout(() => {
+                this.hasScored = false
+            }, this.scoreDelay)
         }
 
         /* Losing a life */
