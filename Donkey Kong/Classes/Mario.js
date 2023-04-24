@@ -98,7 +98,7 @@ export class Mario {
                     this.keys.space.pressed = false;
                     break;
             }
-        });
+        })
     }
 
     setCharacter(character) {
@@ -208,9 +208,6 @@ export class Mario {
 
         ctx.strokeStyle = 'white' // color of the border
         ctx.lineWidth = 1 // width of the border
-
-        // this.sprites.drawSpriteBarrel(59, 0, 18, 18, this.x + 120, this.y, 27 + 5, 42 + 5)
-        // this.sprites.drawSpriteBarrel(78, 0, 18, 18, this.x + 160, this.y, 27 + 5, 42 + 5)
 
         // Draw a border around the image
         // ctx.strokeRect(this.x + 120, this.y, 27 + 5, 42 + 5)
