@@ -6,13 +6,15 @@ import {Ladder} from "./Classes/Ladder.js"
 
 const canvas = document.getElementById("myCanvas")
 const ctx = canvas.getContext("2d", { willReadFrequently: true })
+ctx.imageSmoothingEnabled = false
 
 let gameState = "title"
 let character = "Mario"
-let isGameStarted = false
 
 let sprites = new Image()
 sprites.src = './mario_and_luigi_sprites.png'
+
+let paused = false
 
 class Game {
     
@@ -25,6 +27,7 @@ class Game {
         this.score = 0
         this.highScore = 0
         this.lives = 3
+
 
         this.choose = (event) => {
             if (event.key === "a") {
@@ -291,32 +294,76 @@ class Game {
             update()
         }
     }
+
+    pauseScreen() {
+        const w = 550
+        const h = 100
+
+        ctx.beginPath()
+        ctx.rect(canvas.width / 2 - w / 2, canvas.height / 2 - h / 2 , w, h)
+        ctx.fillStyle = 'darkred'
+        ctx.fill()
+        ctx.strokeStyle = 'gold'
+        ctx.lineWidth = 15
+        ctx.lineJoin = "round"
+        ctx.lineCap = "round"
+        ctx.stroke()
+
+        ctx.beginPath()
+        ctx.fillStyle = 'gold'
+        ctx.font = '18px "Press Start 2P", Arial'
+        ctx.textAlign = "center"
+        ctx.fillText("Paused", this.width / 2, 350)
+    }
 }
 
 const game = new Game(canvas.width, canvas.height)
 
 let previous
 
+window.addEventListener('keydown', function (e) {
+    switch (e.key) {
+        case "p":
+        togglePause()
+    }
+})
+
+function togglePause() {
+    if (!paused) {
+        paused = true
+    } 
+    
+    else if (paused) {
+       paused = false
+    }
+}
+
 function update(timestamp) {
     ctx.clearRect(0, 0, canvas.width, canvas.height)
 
     if (gameState == "game") {
-        isGameStarted = true
 
         const elapsed = timestamp - previous || 0
         previous = timestamp
         
         game.draw(ctx)
-        game.updateMario(elapsed)
-        game.updateBarrels(elapsed)
-        game.updateDK(elapsed)
         game.drawPoints()
         game.playerLives()
         game.getPoints()
         game.loseLife()
         game.gameOver()
-
         requestAnimationFrame(update)
+        
+        
+        if (!paused) {
+            game.updateMario(elapsed)
+            game.updateBarrels(elapsed)
+            game.updateDK(elapsed)
+        }
+
+        else if (paused) {
+            game.pauseScreen()
+        }
     }
 
     else if (gameState == "title") {
