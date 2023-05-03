@@ -12,7 +12,7 @@ let gameState = "title"
 let character = "Mario"
 
 let sprites = new Image()
-sprites.src = './mario_luigi_sprites.png'
+sprites.src = './mario_luigi_sprites2.png'
 
 let paused = false
 
