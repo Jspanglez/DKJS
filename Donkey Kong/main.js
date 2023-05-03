@@ -286,7 +286,7 @@ class Game {
         const y = this.height / 2 - h / 2
 
         const img = new Image()
-        img.src = './pausemenu2.png'
+        img.src = './pausemenu.png'
 
         ctx.drawImage(img, x, y, w, h)
 
