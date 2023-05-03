@@ -59,25 +59,6 @@ export class DK {
         }
     }
 
-    /* drawHelp(ctx) {
-
-        if (this.visible) {
-            ctx.drawImage(img, 264, 100, 25, 30, 570, 0, 60, 60)
-        }
-    
-        const currentTime = performance.now()
-    
-        if (this.visible && currentTime - this.startTime >= this.displayDuration) {
-            this.visible = false
-            this.startTime = currentTime
-        } 
-        
-        else if (!this.visible && currentTime - this.startTime >= this.hideDuration) {
-            this.visible = true
-            this.startTime = currentTime
-        }
-    } */
-
 	drawFrame(frameData) {
 		const x = frameData[0]
     	const width = frameData[1]
