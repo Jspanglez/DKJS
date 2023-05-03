@@ -292,7 +292,6 @@ class Game {
 
         ctx.beginPath()
         ctx.fillStyle = 'yellow'
-        ctx.font = '18px "Press Start 2P", Arial'
         ctx.textAlign = "center"
         ctx.fillText("— Paused —", this.width / 2, 400)
     }
