@@ -35,19 +35,15 @@ export class Mario {
         this.force = 5
         this.speed = 0
         this.keys = keys
-        this.currentPlatform = null
         this.currentLadder = null
         this.isJumping = false
-        this.isClimbing = false
         this.isClimbingDown = false
-        this.isOnLadder = false
         this.movingLeft = false
         this.movingRight = false
         this.facingLeft = false
         this.facingRight = true
         this.loopLeft = [0, 17, 35.5]
         this.loopRight = [55, 38, 20]
-        /* this.loopClimb = [0, 10] */
         this.loopIndex = 0
         this.timeSinceLastFrameChange = 0
         this.timeBetweenFrames = 60
@@ -108,10 +104,6 @@ export class Mario {
     drawFrame(spriteX, spriteY) {
         this.sprites.drawSprite(spriteX, spriteY, 15, 18, this.x, this.y, this.width, this.height)
     }
-
-    drawClimb(spriteX) {
-        this.sprites.drawClimbing(spriteX, 0, 15, 18, this.x, this.y, this.width, this.height)
-    }
     
     drawMario(ctx, elapsed) {
 
@@ -130,7 +122,7 @@ export class Mario {
             jumpLeft = [52, -1]
             jumpRight = [2, 18.5]
             moveLeft = -1
-            moveRight = 17
+            moveRight = 17.1
         }
 
         else if (this.character == "Luigi") {
@@ -138,11 +130,12 @@ export class Mario {
             standRight = [55, 53]
             jumpLeft = [52, 36.5]
             jumpRight = [2, 54.5]
-            moveLeft = 35
-            moveRight = 53
+            moveLeft = 35.1
+            moveRight = 53.1
         }
 
         if (this.isJumping) {
+            
             if (this.movingLeft) {
                 this.drawFrame(jumpLeft[0], jumpLeft[1])
             }
@@ -189,23 +182,6 @@ export class Mario {
             }
         }
 
-        /* else if (this.isOnLadder) {
-            this.drawClimb(0)
-        } */
-
-        /* else if (this.isClimbingDown) {
-            this.timeSinceLastFrameChange += elapsed
-            if (this.timeSinceLastFrameChange >= this.timeBetweenFrames) {
-                this.timeSinceLastFrameChange = 0
-                this.loopIndex++
-                if (this.loopIndex >= this.loopClimb.length) {
-                    this.loopIndex = 0
-                }
-            }
-
-            this.drawClimb(this.loopClimb[this.loopIndex])
-        } */
-
         ctx.strokeStyle = 'white' // color of the border
         ctx.lineWidth = 1 // width of the border
 
@@ -214,12 +190,10 @@ export class Mario {
         // ctx.strokeRect(this.x + 160, this.y, 27 + 5, 42 + 5)
     }
       
-
     gravity() {
         this.y += (this.speed + this.force) / 9
         this.speed += 0.2
     }
-
     
     get marioBottom() {
         return this.y + this.height
@@ -227,10 +201,10 @@ export class Mario {
 
     collision(platform) {
         // Check if the bottom of Mario overlaps with the platform
-        if (!this.isClimbingDown && (this.marioBottom > platform.y && this.marioBottom - this.speed < platform.y + 24 &&
+        if (!this.isClimbingDown && !(this.jumpHeight >= 750) &&
+            (this.marioBottom > platform.y && this.marioBottom - this.speed < platform.y + 24 &&
             this.x + this.width - 7 > platform.x && this.x < platform.x + (platform.w * 20) -50)) {
             // Collision detected
-            this.currentPlatform = platform
             this.isJumping = false
             this.y = platform.y - this.height
             this.force = 5
@@ -241,87 +215,87 @@ export class Mario {
     get marioMiddle() {
         return this.x + this.width / 2
     }
-
+    
     ladderDetection(ladder) {
         let ladderEnd = ladder.x + 38
-    
-        // If Mario is in front of the ladder and pressing the W key, he climbs up
-        if (this.marioMiddle >= ladder.x && this.marioMiddle <= ladderEnd && (this.y <= ladder.y && this.y >= ladder.y - 89) && this.keys.w.pressed) {
-            this.currentLadder = ladder
-            this.speed = 0
-            this.y -= 0.2
-            this.isClimbing = true
-        }
-    
-        // If Mario is on the ladder and pressing the S key, he climbs down
-        else if (this.marioMiddle >= ladder.x && this.marioMiddle <= ladderEnd && (this.y <= ladder.y && this.y >= ladder.y - 89) && this.keys.s.pressed) {
-            this.currentLadder = ladder
-            this.speed = 0
-            this.y += 0.2
-            this.isClimbing = true
-        }
-    
-        // If Mario is on the ladder and not pressing any keys, he stays still
-        else if (this.marioMiddle >= ladder.x && this.marioMiddle <= ladderEnd && (this.y <= ladder.y && this.y >= ladder.y - 89)) {
+        let touchingLadder = false
+        let aboveLadder = false
+
+        // If Mario is touching a ladder
+        if (this.marioMiddle >= ladder.x && this.marioMiddle <= ladderEnd && (this.y <= ladder.y && this.y >= ladder.y - (ladder.h * 10 + 70))) {
             this.currentLadder = ladder
             this.isClimbingDown = false
             this.speed = 0
+            touchingLadder = true
         }
-    
-        // If Mario is not on a ladder, he falls down
-        else {
-            this.currentLadder = null
-            this.isClimbing = false
-            this.isOnLadder = false
+
+        // Mario is touching a ladder and the w key is pressed
+        if (touchingLadder == true && this.keys.w.pressed) {
+            this.speed = 0
+            this.y -= 0.2
         }
-    
+
+        // Mario is touching a ladder and the s key is pressed
+        else if (touchingLadder == true && this.keys.s.pressed) {
+            this.speed = 0
+            this.y += 0.2
+        }
+        
         /* If you let go of W or S while on a ladder */
-        if (this.currentLadder && !this.keys.w.pressed && !this.keys.s.pressed && this.collision && this.currentLadder === ladder) {
-            this.force = 0 
+        if (this.currentLadder && !this.keys.w.pressed && !this.keys.s.pressed) {
+            this.force = 0
             this.speed = 0
-            this.isClimbing = false
-            this.isOnLadder = true
-        }
-    
-        /* If you are above a ladder and press W */
-        if (this.currentLadder && this.currentPlatform.y < this.currentLadder.y && this.keys.w.pressed) {
-            this.y = this.currentPlatform.y - this.height
-            this.isClimbing = false
-            this.isOnLadder = false
         }
 
-        /* If you are above a ladder and press S */
-        else if (this.currentLadder && this.currentPlatform.y < this.currentLadder.y && this.keys.s.pressed) {
-            this.currentLadder = ladder
+        // Mario is above a ladder
+        else if (this.marioMiddle >= ladder.x && this.marioMiddle <= ladderEnd && (this.y < ladder.y - 50 && this.y > ladder.y - 200)) {
+            aboveLadder = true
+        }
+
+        // Mario is above a ladder and the s key is pressed
+        if (aboveLadder && this.keys.s.pressed) {
             this.isClimbingDown = true
-            this.speed = 0
-            this.y += 0.1
+        }
+
+        if (this.keys.a.pressed || this.keys.d.pressed) {
+            this.currentLadder = null
         }
     }
     
-
-    get jumpLimit() {
+    /* get jumpLimit() {
         return this.currentPlatform?.y - 90
-    }
+    } */
 
     move() {
-        if (this.keys.space.pressed && !this.isJumping && this.y > this.jumpLimit) {
+
+        if (this.keys.space.pressed && !this.isJumping) {
+            this.isJumping = true
+            this.jumpHeight = 1000
+            this.jumpHeight -= 2
+        }
+      
+        if (this.isJumping) {
+            this.y -= 2
+            this.jumpHeight -= 2
+        }
+
+        /* if (this.keys.space.pressed && !this.isJumping && this.y > this.jumpLimit) {
             this.isJumping = true
             this.jumpHeight = 1000 // height in pixels of the jump
             this.jumpSpeed = 2 // pixels per frame of the jump
         }
-      
+
         if (this.isJumping) {
 
             if (this.jumpHeight > 0) {
                 this.y -= this.jumpSpeed
                 this.jumpHeight -= this.jumpSpeed
             }
-            
+
             else {
                 this.isJumping = false
             }
-        }
+        } */
 
         if (this.keys.a.pressed) {
             this.x -= 1
@@ -329,7 +303,7 @@ export class Mario {
             this.movingRight = false
             this.lastKeyPressed = 'a'
         } 
-    
+
         if (this.keys.d.pressed) {
             this.x += 1
             this.movingRight = true
@@ -349,9 +323,12 @@ export class Mario {
     }
 
     update(ctx, platforms, ladders, character, elapsed) {
+        console.log(this.isClimbingDown);
         this.setCharacter(character)
 
         this.gravity()
+        
+        this.drawMario(ctx, elapsed)
 
         this.move()
 
@@ -362,8 +339,5 @@ export class Mario {
         for (let i = 0; i < ladders.length; i++) {
             this.ladderDetection(ladders[i])
         }
-
-        this.drawMario(ctx, elapsed)
     }
-    
 }
