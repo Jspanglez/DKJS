@@ -24,13 +24,10 @@ export class DK {
         this.isThrowing = false
         this.hasThrown = false
         this.throwingDelay = 10
-        this.thrownDelay = 900
+        this.thrownDelay = 2000
         this.throwingTimer = null
         this.thrownTimer = null
-        this.visible = true
-        this.displayDuration = 1000
-        this.hideDuration = 1000
-        this.startTime = 0
+        this.visible = false
         this.timeSinceLastFrameChange = 0
         this.timeBetweenFrames = 600
 	}
@@ -48,6 +45,22 @@ export class DK {
 
     drawHelp(ctx) {
 
+        if (!this.visible) {
+            setTimeout(() => {
+                this.visible = true
+            }, 800)
+        }
+
+       else if (this.visible) {
+            ctx.drawImage(img, 264, 100, 25, 30, 570, 0, 60, 60)
+            setTimeout(() => {
+                this.visible = false
+            }, 800)
+        }
+    }
+
+    /* drawHelp(ctx) {
+
         if (this.visible) {
             ctx.drawImage(img, 264, 100, 25, 30, 570, 0, 60, 60)
         }
@@ -63,7 +76,7 @@ export class DK {
             this.visible = true
             this.startTime = currentTime
         }
-    }
+    } */
 
 	drawFrame(frameData) {
 		const x = frameData[0]
