@@ -5,14 +5,14 @@ import {Platform} from "./Classes/Platform.js"
 import {Ladder} from "./Classes/Ladder.js"
 
 const canvas = document.getElementById("myCanvas")
-const ctx = canvas.getContext("2d", { willReadFrequently: true })
+const ctx = canvas.getContext("2d")
 ctx.imageSmoothingEnabled = false
 
 let gameState = "title"
 let character = "Mario"
 
 let sprites = new Image()
-sprites.src = './mario_and_luigi_sprites.png'
+sprites.src = './mario_luigi_sprites.png'
 
 let paused = false
 
@@ -28,10 +28,10 @@ class Game {
         this.highScore = 0
         this.lives = 3
 
-
         this.choose = (event) => {
             if (event.key === "a") {
                 character = "Mario"
+                ctx.clearRect(590, 400, 85, 30)
                 ctx.fillStyle = "red"
                 ctx.fillText("Mario", 632, 420)
                 ctx.fillStyle = "white"
@@ -40,6 +40,7 @@ class Game {
             
             else if (event.key === "d") {
                 character = "Luigi"
+                ctx.clearRect(840, 400, 85, 30)
                 ctx.fillStyle = "lime"
                 ctx.fillText("Luigi", 882, 420)
                 ctx.fillStyle = "white"
@@ -66,57 +67,57 @@ class Game {
             new Platform(260, 555, 8),
             new Platform(182, 552, 5),
 
-            new Platform(260, 475 + 8, 8),
-            new Platform(383, 470 + 8, 8),
-            new Platform(506, 465 + 8, 8),
-            new Platform(629, 460 + 8, 8),
-            new Platform(752, 455 + 8, 8),
-            new Platform(875, 450 + 8, 8),
-            new Platform(998, 445 + 8, 8),
-            new Platform(1121, 440 + 8, 8),
-            new Platform(1244, 435 + 8, 5),
+            new Platform(260, 483, 8),
+            new Platform(383, 478, 8),
+            new Platform(506, 473, 8),
+            new Platform(629, 468, 8),
+            new Platform(752, 463, 8),
+            new Platform(875, 458, 8),
+            new Platform(998, 453, 8),
+            new Platform(1121, 448, 8),
+            new Platform(1244, 443, 5),    
 
-            new Platform(1121, 365 + 10, 8),
-            new Platform(998, 360 + 10, 8),
-            new Platform(875, 355 + 10, 8),
-            new Platform(752, 350 + 10, 8),
-            new Platform(629, 345 + 10, 8),
-            new Platform(506, 340 + 10, 8),
-            new Platform(383, 335 + 10, 8),
-            new Platform(260, 330 + 10, 8),
-            new Platform(182, 325 + 10, 5),
+            new Platform(1121, 375, 8),
+            new Platform(998, 370, 8),
+            new Platform(875, 365, 8),
+            new Platform(752, 360, 8),
+            new Platform(629, 355, 8),
+            new Platform(506, 350, 8),
+            new Platform(383, 345, 8),
+            new Platform(260, 340, 8),
+            new Platform(182, 335, 5),
 
-            new Platform(260, 253 + 15, 8),
-            new Platform(383, 248 + 15, 8),
-            new Platform(506, 243 + 15, 8),
-            new Platform(629, 238 + 15, 8),
-            new Platform(752, 233 + 15, 8),
-            new Platform(875, 228 + 15, 8),
-            new Platform(998, 223 + 15, 8),
-            new Platform(1121, 218 + 15, 8),
-            new Platform(1244, 213 + 15, 5),
+            new Platform(260, 268, 8),
+            new Platform(383, 263, 8),
+            new Platform(506, 258, 8),
+            new Platform(629, 253, 8),
+            new Platform(752, 248, 8),
+            new Platform(875, 243, 8),
+            new Platform(998, 238, 8),
+            new Platform(1121, 233, 8),
+            new Platform(1244, 228, 5),
 
             new Platform(1121, 158, 8),
             new Platform(998, 153, 8),
             new Platform(875, 148, 8),
             new Platform(752, 143, 8),
 
-            new Platform(500, 37 + 20, 25),
+            new Platform(500, 57, 25),
 
-            new Platform(408, 60 + 20, 6),
+            new Platform(408, 80, 6),
         ]
 
         this.ladders = [
-            new Ladder(1125, 612, 1),
-            new Ladder(350, 521, 1),
-            new Ladder(1125, 413, 1),
-            new Ladder(350, 306, 1),
-            new Ladder(1125, 196, 1),
-            new Ladder(680, 525, 2),
-            new Ladder(760, 428, 3),
-            new Ladder(845, 110, 2),
-            new Ladder(410, 100, 4),
-            new Ladder(470, 100, 4),
+            new Ladder(1125, 612, 2),
+            new Ladder(350, 521, 2),
+            new Ladder(1125, 413, 2),
+            new Ladder(350, 306, 2),
+            new Ladder(1125, 196, 2),
+            new Ladder(680, 526, 3),
+            new Ladder(760, 428, 4),
+            new Ladder(845, 110, 3),
+            new Ladder(410, 100, 7),
+            new Ladder(470, 100, 7),
         ]
     }
 
@@ -160,7 +161,6 @@ class Game {
 
     drawPoints() {
         ctx.fillStyle = 'white'
-        ctx.font = '16px "Press Start 2P", Arial'
         ctx.fillText(`Score: ${this.score}`, 90, 20)
     }
 
@@ -176,10 +176,23 @@ class Game {
     loseLife() {
         for (let i = 0; i < this.barrels.length; i++) {
             if (this.barrels[i].dead) {
-                this.lives -= 1 
+                this.lives -= 1
                 this.resetGame()
             }
         }
+
+        if (this.mario.y > this.height) {
+            this.lives -= 1
+            this.resetGame()
+        }
+    }
+
+    playerLives() {
+        ctx.fillStyle = 'white'
+        const text = `Lives: ${this.lives}`
+        const textWidth = ctx.measureText(text).width
+        const x = canvas.width - textWidth - 10 
+        ctx.fillText(text, x + 60, 20)
     }
 
     gameOver() {
@@ -195,15 +208,6 @@ class Game {
         }
     }
 
-    playerLives() {
-        ctx.fillStyle = 'white'
-        ctx.font = '16px "Press Start 2P", Arial'
-        const text = `Lives: ${this.lives}`
-        const textWidth = ctx.measureText(text).width
-        const x = canvas.width - textWidth - 10 
-        ctx.fillText(text, x + 60, 20)
-    }
-
     showTitleScreen() {
         // Clear canvas
         ctx.clearRect(0, 0, this.width, this.height)
@@ -216,20 +220,19 @@ class Game {
         img.src = './dk_title.png'
 
         img.onload = () => {
-            // Draw title screen
+            // Draw the title
             const x = (this.width - 700) / 2
-            ctx.drawImage(img, x, 10, 700, 400)
-    
-            ctx.fillStyle = 'white'
-            ctx.font = '16px "Press Start 2P", Arial'
-            ctx.textAlign = "center"
-            ctx.fillText("Press Enter to Start", this.width / 2, 500)
-            ctx.fillText(`HIGH SCORE: ${this.highScore}`, this.width / 2, 600)
-    
-            // Add event listener for enter key press to start the game
-            document.addEventListener("keydown", this.startSelect)
+            ctx.drawImage(img, x, 10, 700, 400)            
         }
-
+        
+        ctx.fillStyle = 'white'
+        ctx.font = '16px "Press Start 2P", Arial'
+        ctx.textAlign = "center"
+        ctx.fillText("Press Enter to Start", this.width / 2, 500)
+        ctx.fillText(`HIGH SCORE: ${this.highScore}`, this.width / 2, 600)
+        
+        // Add event listener for enter key press to start the game
+        document.addEventListener("keydown", this.startSelect)
     }
 
     startSelect = (event) => {
@@ -245,34 +248,15 @@ class Game {
         ctx.clearRect(0, 0, this.width, this.height)
 
         ctx.fillStyle = 'white'
-        ctx.font = '16px "Press Start 2P", Arial'
         ctx.textAlign = "center"
         ctx.fillText("Select your character", this.width / 2, 200)
 
-        ctx.save()
-        ctx.scale(-1, 1)
+        ctx.drawImage(sprites, 38, 17, 15, 18, 600, 300, 60, 90)
+        ctx.drawImage(sprites, 38, 53, 15, 18, 850, 300, 60, 90)
 
-        ctx.drawImage(sprites, 17, 4, 15, 19, -600 - 60, 300, 60, 90)
-        ctx.drawImage(sprites, 409, 122, 15, 19, -850 - 60, 300, 60, 90)
-
-        ctx.restore()
-
-        ctx.fillText("Mario", 632, 420)
         ctx.fillText("Luigi", 882, 420)
-
-        if (character === "Mario") {
-            ctx.fillStyle = "red"
-            ctx.fillText("Mario", 632, 420)
-            ctx.fillStyle = "white"
-            ctx.fillText("Luigi", 882, 420)
-        } 
-        
-        else if (character === "Luigi") {
-            ctx.fillStyle = "lime"
-            ctx.fillText("Luigi", 882, 420)
-            ctx.fillStyle = "white"
-            ctx.fillText("Mario", 632, 420)
-        }
+        ctx.fillStyle = 'red'
+        ctx.fillText("Mario", 632, 420)
         
         document.addEventListener("keydown", this.choose)
 
@@ -297,23 +281,20 @@ class Game {
 
     pauseScreen() {
         const w = 550
-        const h = 100
+        const h = 200
+        const x = this.width / 2 - w / 2
+        const y = this.height / 2 - h / 2
+
+        const img = new Image()
+        img.src = './pausemenu2.png'
+
+        ctx.drawImage(img, x, y, w, h)
 
         ctx.beginPath()
-        ctx.rect(canvas.width / 2 - w / 2, canvas.height / 2 - h / 2 , w, h)
-        ctx.fillStyle = 'darkred'
-        ctx.fill()
-        ctx.strokeStyle = 'gold'
-        ctx.lineWidth = 15
-        ctx.lineJoin = "round"
-        ctx.lineCap = "round"
-        ctx.stroke()
-
-        ctx.beginPath()
-        ctx.fillStyle = 'gold'
+        ctx.fillStyle = 'yellow'
         ctx.font = '18px "Press Start 2P", Arial'
         ctx.textAlign = "center"
-        ctx.fillText("Paused", this.width / 2, 350)
+        ctx.fillText("— Paused —", this.width / 2, 400)
     }
 }
 
