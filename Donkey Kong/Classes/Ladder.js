@@ -9,33 +9,14 @@ export class Ladder {
     }
 
     drawLadder(ctx) {
-        if (this.h == 1) {
-            ctx.drawImage(img, 130, 151.5, 10, 9, this.x, this.y, 38, 38)
-            ctx.drawImage(img, 130, 151.5, 10, 9, this.x, this.y - 15, 38, 38)
-        }
+        const spriteX = 130
+        const spriteY = 151.5
+        const spriteWidth = 10.5
+        const spriteHeight = 9
         
-        else if (this.h == 2) {
-            ctx.drawImage(img, 130, 151.5, 10, 9, this.x, this.y, 38, 38)
-            ctx.drawImage(img, 130, 151.5, 10, 9, this.x, this.y - 15, 38, 38)
-            ctx.drawImage(img, 130, 151.5, 10, 9, this.x, this.y - 30, 38, 38)
-            ctx.drawImage(img, 130, 151.5, 10, 9, this.x, this.y - 33, 38, 38)
-        }
-
-        else if (this.h == 3) {
-            ctx.drawImage(img, 130, 151.5, 10, 9, this.x, this.y, 38, 38)
-            ctx.drawImage(img, 130, 151.5, 10, 9, this.x, this.y - 15, 38, 38)
-            ctx.drawImage(img, 130, 151.5, 10, 9, this.x, this.y - 30, 38, 38)
-            ctx.drawImage(img, 130, 151.5, 10, 9, this.x, this.y - 45, 38, 38)
-        }
-
-        else if (this.h == 4) {
-            ctx.drawImage(img, 130, 151.5, 10, 9, this.x, this.y, 38, 38)
-            ctx.drawImage(img, 130, 151.5, 10, 9, this.x, this.y - 15, 38, 38)
-            ctx.drawImage(img, 130, 151.5, 10, 9, this.x, this.y - 30, 38, 38)
-            ctx.drawImage(img, 130, 151.5, 10, 9, this.x, this.y - 45, 38, 38)
-            ctx.drawImage(img, 130, 151.5, 10, 9, this.x, this.y - 60, 38, 38)
-            ctx.drawImage(img, 130, 151.5, 10, 9, this.x, this.y - 75, 38, 38)
-            ctx.drawImage(img, 130, 151.5, 10, 9, this.x, this.y - 90, 38, 38)
+        for (let i = 0; i < this.h; i++) {
+            const y = this.y - i * 15
+            ctx.drawImage(img, spriteX, spriteY, spriteWidth, spriteHeight, this.x, y, 38, 38)
         }
     }
 }
