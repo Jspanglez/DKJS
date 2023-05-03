@@ -323,7 +323,6 @@ export class Mario {
     }
 
     update(ctx, platforms, ladders, character, elapsed) {
-        console.log(this.isClimbingDown);
         this.setCharacter(character)
 
         this.gravity()
