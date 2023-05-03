@@ -10,7 +10,6 @@ export class Barrel {
         this.width = width
         this.height = height
         this.force = 0.5
-        this.currentPlatform = null
         this.left = false
         this.right = false
         this.rollingLeft = [45, 30, 15, 0]
@@ -27,7 +26,7 @@ export class Barrel {
     }
 
     drawFrame(frameX) {
-        this.sprites.drawSpriteBarrel(frameX, 0, 13, 12, this.x, this.y, this.width, this.height)
+        this.sprites.drawSpriteBarrel(frameX, 0, 14, 12, this.x, this.y, this.width, this.height)
 
         // this.ctx.strokeStyle = 'white'
         // this.ctx.lineWidth = 1
@@ -38,7 +37,7 @@ export class Barrel {
     }
 
     drawFalling(x) {
-        this.sprites.drawSpriteBarrel(x, 0, 17, 18, this.x, this.y, this.width + 5, this.height + 5)
+        this.sprites.drawSpriteBarrel(x, 0, 18, 18, this.x, this.y, this.width + 5, this.height + 5)
 
         // this.ctx.strokeStyle = 'white'
         // this.ctx.lineWidth = 1
@@ -159,14 +158,12 @@ export class Barrel {
         const playerRight = player.x + player.width
         const playerTop = player.y
         const playerBottom = player.y + player.height
-        let playerMiddle = (player.x + player.width) / 2
-        let playerMiddleY = (player.y + player.height) / 2
+        const playerMiddle = (player.x + player.width) / 2
 
         // Check if the bottom of the barrel overlaps with the platform
         if (this.barrelBottom > platform.y && this.barrelBottom - this.force < platform.y + 24 &&
             this.x + this.width - 7 > platform.x && this.x < platform.x + (platform.w * 20) - 50) {
           // Collision detected
-          this.currentPlatform = platform
           this.y = platform.y - this.height
         }
 
@@ -185,11 +182,6 @@ export class Barrel {
                  this.barrelTop + 5 < playerBottom &&
                  this.barrelBottom - 5 > playerTop) {
             this.dead = true
-        }
-
-        else {
-            // No collision, the barrel is falling
-            this.currentPlatform = null
         }
     }
     
