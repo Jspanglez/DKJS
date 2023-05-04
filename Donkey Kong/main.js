@@ -21,7 +21,7 @@ class Game {
     constructor(width, height) {
         this.width = width
         this.height = height
-        this.mario = new Mario(200, 608, 35, 52, character)
+        this.mario = new Mario(200, 608, 35, 52)
         this.dk = new DK(250, -5)
         this.barrels = []
         this.score = 0
@@ -297,27 +297,27 @@ class Game {
     }
 }
 
-const game = new Game(canvas.width, canvas.height)
-
-let previous
-
 window.addEventListener('keydown', function (e) {
     switch (e.key) {
         case "p":
-        togglePause()
-    }
-})
-
+            togglePause()
+        }
+    })
+    
 function togglePause() {
     if (!paused) {
         paused = true
     } 
     
     else if (paused) {
-       paused = false
+        paused = false
     }
 }
+    
+const game = new Game(canvas.width, canvas.height)
 
+let previous
+    
 function update(timestamp) {
     ctx.clearRect(0, 0, canvas.width, canvas.height)
 
@@ -348,10 +348,6 @@ function update(timestamp) {
 
     else if (gameState == "title") {
         game.showTitleScreen()
-    }
-
-    else if (gameState == "character") {
-        game.characterSelect()
     }
 }
 

@@ -26,12 +26,11 @@ let img = new Image()
 img.src = './mario_and_luigi_sprites.png'
 
 export class Mario {
-    constructor(x, y, width, height, character) {
+    constructor(x, y, width, height) {
         this.x = x
         this.y = y
         this.width = width
         this.height = height
-        this.character = character
         this.force = 5
         this.speed = 0
         this.keys = keys
