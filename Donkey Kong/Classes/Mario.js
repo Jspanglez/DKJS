@@ -209,6 +209,10 @@ export class Mario {
             this.force = 5
             this.speed = 0
         }
+
+        else if (this.y <= 86 && this.x < 500) {
+            this.x = 500
+        }
     }
 
     get marioMiddle() {
