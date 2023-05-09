@@ -264,10 +264,6 @@ export class Mario {
             this.currentLadder = null
         }
     }
-    
-    /* get jumpLimit() {
-        return this.currentPlatform?.y - 90
-    } */
 
     move() {
 
@@ -281,24 +277,6 @@ export class Mario {
             this.y -= 2
             this.jumpHeight -= 2
         }
-
-        /* if (this.keys.space.pressed && !this.isJumping && this.y > this.jumpLimit) {
-            this.isJumping = true
-            this.jumpHeight = 1000 // height in pixels of the jump
-            this.jumpSpeed = 2 // pixels per frame of the jump
-        }
-
-        if (this.isJumping) {
-
-            if (this.jumpHeight > 0) {
-                this.y -= this.jumpSpeed
-                this.jumpHeight -= this.jumpSpeed
-            }
-
-            else {
-                this.isJumping = false
-            }
-        } */
 
         if (this.keys.a.pressed) {
             this.x -= 1
@@ -326,6 +304,8 @@ export class Mario {
     }
 
     update(ctx, platforms, ladders, character, elapsed) {
+        console.log(this.x, this.y);
+
         this.setCharacter(character)
 
         this.gravity()

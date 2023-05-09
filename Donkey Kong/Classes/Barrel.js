@@ -27,23 +27,10 @@ export class Barrel {
 
     drawFrame(frameX) {
         this.sprites.drawSpriteBarrel(frameX, 0, 14, 12, this.x, this.y, this.width, this.height)
-
-        // this.ctx.strokeStyle = 'white'
-        // this.ctx.lineWidth = 1
-
-        // Draw a border around the image
-        //this.ctx.strokeRect(this.x, this.y, this.width, this.height)
-        //this.ctx.strokeRect(this.x, this.y - 20, this.width, 1)
     }
 
     drawFalling(x) {
         this.sprites.drawSpriteBarrel(x, 0, 18, 18, this.x, this.y, this.width + 5, this.height + 5)
-
-        // this.ctx.strokeStyle = 'white'
-        // this.ctx.lineWidth = 1
-
-        // Draw a border around the image
-        //this.ctx.strokeRect(this.x, this.y, this.width, this.height - 15)
     }
 
     step(ctx, elapsed) {
@@ -162,7 +149,7 @@ export class Barrel {
 
         // Check if the bottom of the barrel overlaps with the platform
         if (this.barrelBottom > platform.y && this.barrelBottom - this.force < platform.y + 24 &&
-            this.x + this.width - 7 > platform.x && this.x < platform.x + (platform.w * 20) - 50) {
+            this.x + this.width - 7 > platform.x && this.x < platform.x + (platform.w * 20) - 40) {
           // Collision detected
           this.y = platform.y - this.height
         }
