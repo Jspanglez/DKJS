@@ -49,7 +49,12 @@ class Game {
         }
 
         this.platforms = [
-            new Platform(120, 138, 42),
+            new Platform(122, 138, 8),
+            new Platform(245, 138, 8),
+            new Platform(368, 138, 8),
+            new Platform(491, 138, 8),
+            new Platform(614, 138, 9), 
+            
             new Platform(120, 660, 42),
             new Platform(752, 657, 8),
             new Platform(875, 654, 8),
