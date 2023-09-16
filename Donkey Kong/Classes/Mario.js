@@ -133,6 +133,7 @@ export class Mario {
             moveRight = 53.1
         }
 
+        // Jumping
         if (this.isJumping) {
             
             if (this.movingLeft) {
@@ -144,6 +145,7 @@ export class Mario {
             }
         }
 
+        // Standing
         else if (this.facingLeft && !this.keys.a.pressed) {
             this.drawFrame(standLeft[0], standLeft[1])
         }
@@ -152,6 +154,7 @@ export class Mario {
             this.drawFrame(standRight[0], standRight[1])
         }
 
+        // Running
         else if (!this.isJumping) {
             
             // Increase time since last frame change by elapsed time
@@ -180,13 +183,6 @@ export class Mario {
                 this.drawFrame(this.loopRight[this.loopIndex], moveRight)
             }
         }
-
-        ctx.strokeStyle = 'white' // color of the border
-        ctx.lineWidth = 1 // width of the border
-
-        // Draw a border around the image
-        // ctx.strokeRect(this.x + 120, this.y, 27 + 5, 42 + 5)
-        // ctx.strokeRect(this.x + 160, this.y, 27 + 5, 42 + 5)
     }
       
     gravity() {
@@ -210,6 +206,7 @@ export class Mario {
             this.speed = 0
         }
 
+        // Invisible wall
         else if (this.y <= 86 && this.x < 500) {
             this.x = 500
         }

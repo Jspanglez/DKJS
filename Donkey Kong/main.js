@@ -306,8 +306,8 @@ window.addEventListener('keydown', function (e) {
     switch (e.key) {
         case "p":
             togglePause()
-        }
-    })
+    }
+})
     
 function togglePause() {
     if (!paused) {
