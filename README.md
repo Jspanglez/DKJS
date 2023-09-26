@@ -4,9 +4,13 @@ Play [here](https://jspanglez.github.io/DKJS/).
 
 > [!NOTE]
 > Controls:
+> 
 > Move: W A S D
+> 
 > Jump: SPACE
+> 
 > Pause: P
+> 
 > Select character: ENTER
 
 
