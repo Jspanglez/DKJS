@@ -15,6 +15,7 @@ Play [here](https://jspanglez.github.io/DKJS/).
 > Select character: ENTER
 
 
+
 This is my final year project for my Computer Science course at De Montford University. It is a recreation of the first level of the original Donkey Kong arcade game, built entirely using vanilla JavaScript.
 
 ![image](https://github.com/Jspanglez/DKJS/assets/98091691/84936874-4f6e-463d-8b8d-6f905c1a3fb9)
