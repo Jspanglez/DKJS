@@ -2,8 +2,11 @@
 
 ## Controls 
 Move: W A S D
+
 Jump: SPACE
+
 Pause: P
+
 Select character: ENTER
 
 This is my final year project for my Computer Science course at De Montford University. It is a recreation of the first level of the original Donkey Kong arcade game, built entirely using vanilla JavaScript.
