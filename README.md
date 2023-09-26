@@ -2,7 +2,9 @@
 
 Play [here](https://jspanglez.github.io/DKJS/).
 
-> [!Controls]
+> [!NOTE]
+>
+> Controls:
 > 
 > Move: W A S D
 > 
